@@ -38,6 +38,7 @@
     .details-container table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     .details-container th, .details-container td { border: 1px solid #444; padding: 8px; text-align: center; font-size:13px; }
     .details-container th { background-color: #3a3a3a; }
+    a#logout-link { color: #ff6b6b; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -87,10 +88,23 @@
         <input type="button" class="save-button" onclick="publishUpdate()" value="Lưu & Gửi Lệnh Cập Nhật">
         <input type="button" class="test-button" onclick="publishTestBell()" value="Thử Chuông">
       </div>
+
+      <div style="text-align:center; margin-top:20px; float:left; width: 100%;">
+         <a id="logout-link" onclick="logout()">Đăng xuất</a>
+      </div>
+
     </div>
   </div>
 
   <script>
+    // --- BẢO VỆ TRANG: CHẶN TRUY CẬP TRỰC TIẾP ---
+    if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+        // Nếu không có trạng thái 'đã đăng nhập', chuyển về trang login
+        window.location.href = 'login.html'; 
+    }
+    // --- KẾT THÚC BẢO VỆ ---
+
+
     let client;
     const brokerUrl = 'wss://366af3ec40124749863257ecd2c62b3e.s1.eu.hivemq.cloud:8884/mqtt';
     const options = {
@@ -163,6 +177,12 @@
       client.publish('esp8266/bell/control', 'TEST_BELL', { qos: 1 });
       console.log("Đã gửi lệnh thử chuông.");
     }
+
+    // HÀM ĐĂNG XUẤT MỚI
+    function logout() {
+        sessionStorage.removeItem('isLoggedIn');
+        window.location.href = 'login.html';
+    }
     
     const createDayContent = (dayId, dayName, session, hasChaoCo, hasChuNhiem) => {
         let specialPeriod = '';
@@ -203,10 +223,7 @@
         containerSang.innerHTML += createDayContent(`${day.id}_sang`, day.name, 'sang', day.chaoCo, day.chuNhiem);
         containerChieu.innerHTML += createDayContent(`${day.id}_chieu`, day.name, 'chieu', false, false);
     });
-
-    /*******************************************************
-     * *** HÀM QUAN TRỌNG ĐÃ SỬA LỖI LOGIC ***
-     *******************************************************/
+    
     function populateForm(data) {
         const scheduleData = data.schedule ? data.schedule : data;
         if (!scheduleData || !scheduleData.sohoi || !scheduleData.lich) {
@@ -241,9 +258,6 @@
         });
     }
     
-    /*******************************************************
-     * *** HÀM QUAN TRỌNG ĐÃ SỬA LỖI LOGIC ***
-     *******************************************************/
     function gatherDataFromForm() {
         const allData = { sohoi: {}, lich: { sang: {}, chieu: {} } };
         ['batdau', 'vaotiet', 'rachoi', 'duvao'].forEach(key => {
@@ -261,16 +275,11 @@
                 dayData.duvaotiet = parseInt(document.getElementById(`duvaotiet_${dayId}`).value) || 0;
                 dayData.sotiet = parseInt(document.getElementById(`sotiet_${dayId}`).value) || 0;
                 
-                // KIỂM TRA SỰ TỒN TẠI CỦA ELEMENT TRƯỚC KHI ĐỌC
                 const chaocoEl = document.getElementById(`chaoco_${dayId}`);
-                if (chaocoEl) {
-                    dayData.chaoco = parseInt(chaocoEl.value) || 0;
-                }
+                if (chaocoEl) { dayData.chaoco = parseInt(chaocoEl.value) || 0; }
                 
                 const chunhiemEl = document.getElementById(`chunhiem_${dayId}`);
-                if (chunhiemEl) {
-                    dayData.chunhiem = parseInt(chunhiemEl.value) || 0;
-                }
+                if (chunhiemEl) { dayData.chunhiem = parseInt(chunhiemEl.value) || 0; }
                 
                 allData.lich[session][day.id] = dayData;
             });
