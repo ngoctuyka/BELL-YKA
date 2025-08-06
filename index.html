@@ -1,78 +1,140 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="dark">
+<html lang="vi">
 <head>
-    <title>Hẹn Giờ Chuông Báo (Internet)</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
-    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-    <style>
-        :root{--pico-border-radius:.75rem;--pico-form-element-background-color:#2b2b2b;--pico-form-element-border-color:#444}main{max-width:600px;margin:20px auto}.grid{grid-template-columns:1fr 120px;gap:0 1rem;align-items:center}.clock-container{text-align:center;margin-bottom:1rem}.clock{font-size:2.5em;font-weight:700;color:var(--pico-primary)}.date-display{font-size:.9em;margin-top:-.5rem;color:var(--pico-secondary-text-color)}.status-bar{text-align:center;margin-bottom:1rem;padding:.5rem;border-radius:var(--pico-border-radius);font-weight:500}.status-connected{background-color:#28a745;color:#fff}.status-disconnected{background-color:#dc3545;color:#fff}
-    </style>
+  <title>Hẹn Giờ Chuông Báo - Điều khiển Internet</title>
+  <meta name="viewport" content="width=device-width,user-scalable=0" charset="utf-8">
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js" type="text/javascript"></script>
+  
+  <style type="text/css">
+    body{ background: #1e1e1e; font-family: Verdana, sans-serif; color: #f0f0f0; }
+    #main{ margin: 10px auto; width: 360px; }
+    #content{ background-color: #2a2a2a; border: 1px solid #444; width: 360px; float: left; border-radius: 8px; padding-bottom: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
+    h2 { font-size: 1.4em; margin-top: 20px; margin-bottom: 10px; text-align: center; color: #ffa500; text-shadow: 0 0 5px rgba(255, 165, 0, 0.5); }
+    h3{ margin-top: 25px; margin-bottom: 20px; text-align: center; font-size: 1.2em; font-weight: bold; }
+    #header-sang { color: #66ff99; }
+    #header-chieu { color: #66ccff; }
+    h4 { text-align: center; color: yellow; border-top: 1px solid #444; padding-top: 15px; margin-top: 15px; }
+    hr { border: 1px solid #444; margin: 25px 15px; }
+    .div1{ padding: 0 15px; float: left; margin-bottom: 10px; width: 100%; box-sizing: border-box; }
+    .tab1{ width: 150px; float: left; line-height: 25px; }
+    .tab2{ width: 120px; float: left; display: flex; align-items: center; }
+    input[type="number"], input[type="time"]{ width: 80px; float: left; margin-right: 10px; background-color: #333; border: 1px solid #555; color: white; border-radius: 4px; padding: 5px; }
+    input[type="checkbox"].enable-checkbox { width: 18px; height: 18px; transform: scale(1.1); margin-top: 1px; }
+    .row{ margin-bottom: 8px; float: left; width: 100%; min-height: 35px; display: flex; align-items: center; }
+    .activation-row .tab1 b { font-size: 0.95em; font-weight: normal; }
+    .status-bar { padding: 8px 15px; margin-bottom: 10px; text-align: center; font-weight: bold; border-radius: 4px; transition: background-color 0.5s; }
+    .status-connected { background-color: #28a745; color: white; }
+    .status-disconnected { background-color: #dc3545; color: white; }
+    .clock-container { text-align: center; margin: 15px; background-color: #1a1a1a; border: solid 1px #ffa500; border-radius: 8px; padding: 10px 5px; box-shadow: inset 0 0 10px rgba(255, 165, 0, 0.3); }
+    .clock { font-size: 2.5em; width: 100%; color: yellow; letter-spacing: 2px; }
+    .date-display { font-size: 0.9em; color: white; margin-top: 4px; }
+    .button-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; padding: 0 15px; }
+    input[type="button"] { padding: 12px; font-size: 1em; font-weight: bold; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    .preview-button { background-image: linear-gradient(to top, #4CAF50, #5cdb61); color: white; margin-top: 10px; width: 100%;}
+    .save-button { background-image: linear-gradient(to top, #008CBA, #00a8e0); color: white; }
+    .test-button { background-image: linear-gradient(to top, #f44336, #f65a4c); color: white; }
+    .tab { display: flex; justify-content: space-around; border-bottom: 1px solid #444; margin: 0 15px 15px 15px;}
+    .tab button { flex-grow: 1; border: 1px solid #444; border-bottom: none; outline: none; cursor: pointer; padding: 10px 5px; transition: all 0.3s; font-size: 0.85em; color: #ccc; font-weight: bold; background-color: #333; margin: 0 2px -1px 2px; border-radius: 6px 6px 0 0; }
+    #tab_sang button.active { background-color: #66ff99; color: #111; border-color: #66ff99; }
+    #tab_chieu button.active { background-color: #66ccff; color: #111; border-color: #66ccff; }
+    .tabcontent { display: none; padding: 0 15px;}
+    .details-container table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .details-container th, .details-container td { border: 1px solid #444; padding: 8px; text-align: center; font-size:13px; }
+    .details-container th { background-color: #3a3a3a; }
+    a#logout-link { color: #ff6b6b; cursor: pointer; }
+
+    /* === CÁC CSS MỚI THEO YÊU CẦU === */
+    .tabcontent h3 {
+        font-size: 1.05em;
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+    #header-sohoi {
+        color: #ffc107;
+        text-align: center;
+    }
+    #header-sohoi span {
+        display: block;
+        font-size: 0.8em;
+        font-weight: normal;
+        color: #ccc;
+        margin-top: 2px;
+    }
+    .settings-section .tab1 { width: 140px; }
+    .settings-section .tab2 { width: 110px; }
+  </style>
 </head>
 <body>
-    <main class="container">
-        <article>
-            <header>
-                <hgroup>
-                    <h2>Chuông Báo Tự Động</h2>
-                    <h3>Giao diện điều khiển từ xa (Internet)</h3>
-                </hgroup>
-            </header>
-            <div class="clock-container" id="clock-wrapper" style="display: none;">
-                <div id="clock" class="clock">--:--:--</div>
-                <div id="date" class="date-display">Đang chờ đồng bộ...</div>
-            </div>
-            <div id="status" class="status-bar status-disconnected">Đang kết nối...</div>
-            <details><summary><strong>LỊCH BUỔI SÁNG</strong></summary><div id="tab-container-sang"></div></details>
-            <details><summary><strong>LỊCH BUỔI CHIỀU</strong></summary><div id="tab-container-chieu"></div></details>
-            <details open><summary><strong>CÀI ĐẶT SỐ HỒI CHUÔNG (CHUNG)</strong></summary>
-                <div class="grid"><label for="sohoi_batdau">Bắt đầu buổi học</label><input id="sohoi_batdau" type="number" value="6"></div>
-                <div class="grid"><label for="sohoi_vaotiet">Vào tiết</label><input id="sohoi_vaotiet" type="number" value="5"></div>
-                <div class="grid"><label for="sohoi_rachoi">Ra chơi</label><input id="sohoi_rachoi" type="number" value="3"></div>
-                <div class="grid"><label for="sohoi_duvao">Dự vào lớp</label><input id="sohoi_duvao" type="number" value="2"></div>
-            </details>
-            <footer>
-                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <button onclick="publishUpdate()">Lưu & Gửi Lệnh</button>
-                    <button class="secondary" onclick="publishTestBell()">Thử Chuông</button>
-                </div>
-                <div style="text-align:center; margin-top: 1rem;"><a href="#" onclick="logout()" style="color: #ff6b6b;">Đăng xuất</a></div>
-            </footer>
-        </article>
-    </main>
-    <script>
-        if("true"!==sessionStorage.getItem("isLoggedIn"))window.location.href="login.html";let client,serverTime=null;const brokerUrl="wss://366af3ec40124749863257ecd2c62b3e.s1.eu.hivemq.cloud:8884/mqtt",options={username:"ngoctuyka",password:"Tu12345678@",clientId:"WebAppClient_"+parseInt(1e3*Math.random()),reconnectPeriod:2e3};
-        
-        /*******************************************************
-         * *** HÀM ĐƯỢC CẬP NHẬT ***
-         * Thêm lệnh publish để "Hỏi" xin dữ liệu mới
-         *******************************************************/
-        function connectToMqtt(){
-            console.log("Đang kết nối đến MQTT broker...");
-            const e=document.getElementById("status");
-            e.textContent="Đang kết nối...",e.className="status-bar status-disconnected";
-            client=mqtt.connect(brokerUrl,options);
-            client.on("connect",()=>{
-                console.log("Đã kết nối thành công đến MQTT broker!");
-                e.textContent="Đã kết nối",e.className="status-bar status-connected";
-                document.getElementById("clock-wrapper").style.display="block";
-                client.subscribe("esp8266/bell/data/status",{qos:1},e=>{
-                    if(e) {
-                        console.error("Lỗi khi đăng ký topic status:",e);
-                    } else {
-                        console.log("Đăng ký nhận topic status thành công!");
-                        // SAU KHI ĐĂNG KÝ, GỬI YÊU CẦU LẤY DỮ LIỆU MỚI NHẤT
-                        client.publish('esp8266/bell/data/get', '1', { qos: 1 });
-                        console.log("Da gui yeu cau cap nhat trang thai.");
-                    }
-                });
-            });
-            client.on("message",(e,t)=>{const o=t.toString();"esp8266/bell/data/status"===e&&o&&_load(o)});
-            client.on("error",e=>console.error("Lỗi kết nối MQTT:",e));
-            client.on("close",()=>{console.log("Mất kết nối MQTT. Đang thử kết nối lại..."),e.textContent="Mất kết nối. Đang thử lại...",e.className="status-bar status-disconnected",document.getElementById("clock-wrapper").style.display="none",serverTime=null});
-        }
+  <div id="main">
+    <div id="content">
+      <div style="text-align: center;">
+        <h2>CHUÔNG BÁO TỰ ĐỘNG (INTERNET)</h2>
+      </div>
 
-        function _load(e){try{const t=JSON.parse(e);t.schedule&&t.epoch&&(setTime(t.epoch),populateForm(t.schedule))}catch(t){console.error("Lỗi parse JSON từ MQTT:",t)}}function publishUpdate(){if(!client||!client.connected)return void alert("Chưa kết nối đến máy chủ. Vui lòng đợi hoặc kiểm tra lại kết nối mạng.");try{const e=gatherDataFromForm(),t=JSON.stringify({schedule:e});client.publish("esp8266/bell/data/set",t,{qos:1,retain:!0}),alert("Đã gửi lệnh cập nhật thành công!")}catch(e){alert("Lỗi khi thu thập dữ liệu từ form: "+e.message),console.error(e)}}function publishTestBell(){client&&client.connected?client.publish("esp8266/bell/control","TEST_BELL",{qos:1}):alert("Chưa kết nối đến máy chủ. Vui lòng đợi hoặc kiểm tra lại kết nối mạng.")}function logout(){sessionStorage.removeItem("isLoggedIn"),window.location.href="login.html"}function setTime(e){isNaN(e)||e<1e5?(console.log("Invalid epoch received, clock not set:",e),serverTime=null):(serverTime=new Date(1e3*e),document.getElementById("date").innerHTML=serverTime.toLocaleDateString("vi-VN",{weekday:"long",year:"numeric",month:"long",day:"numeric",timeZone:"Asia/Ho_Chi_Minh"}),updateLocalClock())}function updateLocalClock(){serverTime&&(serverTime.setSeconds(serverTime.getSeconds()+1),document.getElementById("clock").innerHTML=serverTime.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",second:"2-digit",timeZone:"Asia/Ho_Chi_Minh",hour12:!1}))}const createDayContent=(e,t,o,n,a)=>{let l="";return n?l=`<div class="grid"><label for="chaoco_${e}">TG Chào cờ (phút)</label><input id="chaoco_${e}" type="number" value="40"></div>`:a&&(l=`<div class="grid"><label for="chunhiem_${e}">TG Chủ nhiệm (phút)</label><input id="chunhiem_${e}" type="number" value="15"></div>`),`<h4>${t}</h4><div class="grid"><label for="enable_${e}">Kích hoạt lịch</label><input type="checkbox" id="enable_${e}" role="switch"></div><div class="grid"><label for="gio_${e}">Giờ vào học</label><input id="gio_${e}" type="time"></div>${l}<div class="grid"><label for="tiethoc_${e}">TG Tiết học (phút)</label><input id="tiethoc_${e}" type="number" value="45"></div><div class="grid"><label for="rachoi_${e}">TG Ra chơi (phút)</label><input id="rachoi_${e}" type="number" value="5"></div><div class="grid"><label for="duvaotiet_${e}">TG Dự vào (phút)</label><input id="duvaotiet_${e}" type="number" value="3"></div><div class="grid"><label for="sotiet_${e}">Số tiết học</label><input id="sotiet_${e}" type="number" value="5"></div><details role="list"><summary>Xem lịch chi tiết</summary><div class="details-container" id="details-${e}">Bấm "Cập nhật" để xem</div></details><button class="contrast" onclick="updatePreviewTable('${e}')" style="margin-top:0.5rem; width:100%;">Cập nhật bảng chi tiết</button><hr>`},containerSang=document.getElementById("tab-container-sang"),containerChieu=document.getElementById("tab-container-chieu"),days=[{id:"t2",name:"Thứ 2",chaoCo:!0,chuNhiem:!1},{id:"t3",name:"Thứ 3",chaoCo:!1,chuNhiem:!0},{id:"t4",name:"Thứ 4",chaoCo:!1,chuNhiem:!0},{id:"t5",name:"Thứ 5",chaoCo:!1,chuNhiem:!0},{id:"t6",name:"Thứ 6",chaoCo:!1,chuNhiem:!0},{id:"t7",name:"Thứ 7",chaoCo:!1,chuNhiem:!1},{id:"cn",name:"Chủ Nhật",chaoCo:!1,chuNhiem:!1}];days.forEach(e=>{containerSang.innerHTML+=createDayContent(`${e.id}_sang`,e.name,"sang",e.chaoCo,e.chuNhiem),containerChieu.innerHTML+=createDayContent(`${e.id}_chieu`,e.name,"chieu",!1,!1)});function populateForm(e){const t=e.schedule?e.schedule:e;t&&t.sohoi&&t.lich?(console.log("Bat dau cap nhat form voi du lieu:",t),t.sohoi&&["batdau","vaotiet","rachoi","duvao"].forEach(e=>{const o=document.getElementById(`sohoi_${e}`);o&&(o.value=t.sohoi[e]||"")}),["sang","chieu"].forEach(e=>{days.forEach(o=>{const n=t.lich?.[e]?.[o.id];if(n){document.getElementById(`enable_${o.id}_${e}`).checked=n.enabled,document.getElementById(`gio_${o.id}_${e}`).value=n.gio||"",document.getElementById(`tiethoc_${o.id}_${e}`).value=n.tiethoc||"",document.getElementById(`rachoi_${o.id}_${e}`).value=n.rachoi||"",document.getElementById(`duvaotiet_${o.id}_${e}`).value=n.duvaotiet||"",document.getElementById(`sotiet_${o.id}_${e}`).value=n.sotiet||"";const t=document.getElementById(`chaoco_${o.id}_${e}`);t&&(t.value=n.chaoco||0);const a=document.getElementById(`chunhiem_${o.id}_${e}`);a&&(a.value=n.chunhiem||0),updatePreviewTable(`${o.id}_${e}`)}})})):console.error("Dữ liệu lịch học nhận được không hợp lệ hoặc không đầy đủ:",e)}function gatherDataFromForm(){const e={sohoi:{},lich:{sang:{},chieu:{}}};return["batdau","vaotiet","rachoi","duvao"].forEach(t=>{e.sohoi[t]=parseInt(document.getElementById(`sohoi_${t}`).value)||0}),["sang","chieu"].forEach(t=>{days.forEach(o=>{const n=e.lich[t][o.id]={};n.enabled=document.getElementById(`enable_${o.id}_${t}`).checked,n.gio=document.getElementById(`gio_${o.id}_${t}`).value,n.tiethoc=parseInt(document.getElementById(`tiethoc_${o.id}_${t}`).value)||0,n.rachoi=parseInt(document.getElementById(`rachoi_${o.id}_${t}`).value)||0,n.duvaotiet=parseInt(document.getElementById(`duvaotiet_${o.id}_${t}`).value)||0,n.sotiet=parseInt(document.getElementById(`sotiet_${o.id}_${t}`).value)||0;const a=document.getElementById(`chaoco_${o.id}_${t}`);a&&(n.chaoco=parseInt(a.value)||0);const l=document.getElementById(`chunhiem_${o.id}_${t}`);l&&(n.chunhiem=parseInt(l.value)||0)})}),e}function timeToMinute(e){if(!e)return 0;const[t,o]=e.split(":").map(Number);return 60*t+o}function minuteToTime(e){const t=Math.floor(e/60).toString().padStart(2,"0"),o=(e%60).toString().padStart(2,"0");return`${t}:${o}`}function calculateSchedule(e){const t=e=>parseInt(document.getElementById(e)?.value)||0,o=e=>timeToMinute(document.getElementById(e).value),n=o(`gio_${e}`),a=t(`tiethoc_${e}`),l=t(`rachoi_${e}`),c=t(`duvaotiet_${e}`),s=t(`sotiet_${e}`),i=t(`chaoco_${e}`),d=t(`chunhiem_${e}`);let r=[],u=n;if(i>0)c>0&&r.push({time:u,description:"Dự vào"}),u+=c,r.push({time:u,description:"Chào cờ"}),u+=i,r.push({time:u,description:"Vào tiết 1"});else if(d>0)r.push({time:u,description:"Bắt đầu SH"}),c>0&&r.push({time:u+d,description:"Dự vào tiết 1"}),u=u+d+c,r.push({time:u,description:"Vào tiết 1"});else r.push({time:u,description:"Vào tiết 1"});for(let e=1;e<=s;e++){let t=u+a;e<s?(l>0&&r.push({time:t,description:`Ra chơi tiết ${e}`}),u=(t+=l)+c,c>0&&r.push({time:t,description:`Dự vào tiết ${e+1}`}),r.push({time:u,description:`Vào tiết ${e+1}`}))  :l>0&&r.push({time:t,description:"Ra về"})}const m=Array.from(new Map(r.map(e=>[e.time,e])).values());return m.map(e=>({...e,time:minuteToTime(e.time)})).sort((e,t)=>timeToMinute(e.time)-timeToMinute(t.time))}function updatePreviewTable(e){const t=document.getElementById(`enable_${e}`).checked,o=document.getElementById("details-"+e);if(!o)return;if(!t)return void(o.innerHTML="Bảng chi tiết bị tắt");const n=calculateSchedule(e);let a="<table><thead><tr><th>STT</th><th>Thời gian</th><th>Nội dung</th></tr></thead><tbody>";n.forEach((e,t)=>{a+=`<tr><td>${t+1}</td><td>${e.time}</td><td>${e.description}</td></tr>`}),a+="</tbody></table>",o.innerHTML=a}window.onload=function(){connectToMqtt(),setInterval(updateLocalClock,1e3)};
-    </script>
+      <div class="clock-container" id="clock-wrapper" style="display: none;">
+        <div id="clock" class="clock">--:--:--</div>
+        <div id="date" class="date-display">Đang chờ đồng bộ...</div>
+      </div>
+      
+      <div id="status" class="status-bar status-disconnected">Đang kết nối...</div>
+      
+      <h3 id="header-sang">LỊCH BUỔI SÁNG</h3>
+      <div class="tab" id="tab_sang">
+        <button class="tablinks-sang" onclick="openDay(event, 't2_sang', 'sang')">Thứ 2</button>
+        <button class="tablinks-sang" onclick="openDay(event, 't3_sang', 'sang')">Thứ 3</button>
+        <button class="tablinks-sang" onclick="openDay(event, 't4_sang', 'sang')">Thứ 4</button>
+        <button class="tablinks-sang" onclick="openDay(event, 't5_sang', 'sang')">Thứ 5</button>
+        <button class="tablinks-sang" onclick="openDay(event, 't6_sang', 'sang')">Thứ 6</button>
+        <button class="tablinks-sang" onclick="openDay(event, 't7_sang', 'sang')">Thứ 7</button>
+        <button class="tablinks-sang" onclick="openDay(event, 'cn_sang', 'sang')">CN</button>
+      </div>
+      <div id="tab-container-sang"></div>
+      
+      <hr>
+
+      <h3 id="header-chieu">LỊCH BUỔI CHIỀU</h3>
+      <div class="tab" id="tab_chieu">
+        <button class="tablinks-chieu" onclick="openDay(event, 't2_chieu', 'chieu')">Thứ 2</button>
+        <button class="tablinks-chieu" onclick="openDay(event, 't3_chieu', 'chieu')">Thứ 3</button>
+        <button class="tablinks-chieu" onclick="openDay(event, 't4_chieu', 'chieu')">Thứ 4</button>
+        <button class="tablinks-chieu" onclick="openDay(event, 't5_chieu', 'chieu')">Thứ 5</button>
+        <button class="tablinks-chieu" onclick="openDay(event, 't6_chieu', 'chieu')">Thứ 6</button>
+        <button class="tablinks-chieu" onclick="openDay(event, 't7_chieu', 'chieu')">Thứ 7</button>
+        <button class="tablinks-chieu" onclick="openDay(event, 'cn_chieu', 'chieu')">CN</button>
+      </div>
+      <div id="tab-container-chieu"></div>
+      
+      <div class="settings-section div1">
+        <h3 id="header-sohoi">
+            <div>CÀI ĐẶT SỐ HỒI CHUÔNG</div>
+            <span>(SÁNG - CHIỀU)</span>
+        </h3>
+        <div class="row"><div class="tab1">Bắt đầu buổi học:</div><div class="tab2"><input id="sohoi_batdau" type="number" value="6"><span>hồi</span></div></div>
+        <div class="row"><div class="tab1">Vào tiết:</div><div class="tab2"><input id="sohoi_vaotiet" type="number" value="5"><span>hồi</span></div></div>
+        <div class="row"><div class="tab1">Ra chơi:</div><div class="tab2"><input id="sohoi_rachoi" type="number" value="3"><span>hồi</span></div></div>
+        <div class="row"><div class="tab1">Dự vào lớp:</div><div class="tab2"><input id="sohoi_duvao" type="number" value="2"><span>hồi</span></div></div>
+      </div>
+
+      <div class="button-container">
+        <input type="button" class="save-button" onclick="publishUpdate()" value="Lưu">
+        <input type="button" class="test-button" onclick="publishTestBell()" value="Thử Chuông">
+      </div>
+
+      <div style="text-align:center; margin-top:20px; float:left; width: 100%;">
+         <a id="logout-link" onclick="logout()">Đăng xuất</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    if("true"!==sessionStorage.getItem("isLoggedIn"))window.location.href="login.html";let client,serverTime=null;const brokerUrl="wss://366af3ec40124749863257ecd2c62b3e.s1.eu.hivemq.cloud:8884/mqtt",options={username:"ngoctuyka",password:"Tu12345678@",clientId:"WebAppClient_"+parseInt(1e3*Math.random()),reconnectPeriod:2e3};function connectToMqtt(){console.log("Đang kết nối đến MQTT broker...");const e=document.getElementById("status");e.textContent="Đang kết nối...",e.className="status-bar status-disconnected",client=mqtt.connect(brokerUrl,options),client.on("connect",()=>{console.log("Đã kết nối thành công đến MQTT broker!"),e.textContent="Đã kết nối",e.className="status-bar status-connected",document.getElementById("clock-wrapper").style.display="block",client.subscribe("esp8266/bell/data/status",{qos:1},e=>{e?console.error("Lỗi khi đăng ký topic status:",e):(console.log("Đăng ký nhận topic status thành công!"),client.publish("esp8266/bell/data/get","1",{qos:1}),console.log("Da gui yeu cau cap nhat trang thai."))})}),client.on("message",(e,t)=>{const o=t.toString();"esp8266/bell/data/status"===e&&o&&_load(o)}),client.on("error",e=>console.error("Lỗi kết nối MQTT:",e)),client.on("close",()=>{console.log("Mất kết nối MQTT. Đang thử kết nối lại..."),e.textContent="Mất kết nối. Đang thử lại...",e.className="status-bar status-disconnected",document.getElementById("clock-wrapper").style.display="none",serverTime=null})}function _load(e){try{const t=JSON.parse(e);t.schedule&&t.epoch&&(setTime(t.epoch),populateForm(t.schedule))}catch(t){console.error("Lỗi parse JSON từ MQTT:",t)}}function publishUpdate(){if(!client||!client.connected)return void alert("Chưa kết nối đến máy chủ. Vui lòng đợi hoặc kiểm tra lại kết nối mạng.");try{const e=gatherDataFromForm(),t=JSON.stringify({schedule:e});client.publish("esp8266/bell/data/set",t,{qos:1,retain:!0}),alert("Đã gửi lệnh cập nhật thành công!")}catch(e){alert("Lỗi khi thu thập dữ liệu từ form: "+e.message),console.error(e)}}function publishTestBell(){client&&client.connected?client.publish("esp8266/bell/control","TEST_BELL",{qos:1}):alert("Chưa kết nối đến máy chủ. Vui lòng đợi hoặc kiểm tra lại kết nối mạng.")}function logout(){sessionStorage.removeItem("isLoggedIn"),window.location.href="login.html"}function setTime(e){isNaN(e)||e<1e5?(console.log("Invalid epoch received, clock not set:",e),serverTime=null):(serverTime=new Date(1e3*e),document.getElementById("date").innerHTML=serverTime.toLocaleDateString("vi-VN",{weekday:"long",year:"numeric",month:"long",day:"numeric",timeZone:"Asia/Ho_Chi_Minh"}),updateLocalClock())}function updateLocalClock(){serverTime&&(serverTime.setSeconds(serverTime.getSeconds()+1),document.getElementById("clock").innerHTML=serverTime.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",second:"2-digit",timeZone:"Asia/Ho_Chi_Minh",hour12:!1}))}const createDayContent=(e,t,o)=>{const n="t2_sang"===e,a="sang"===o&&["t3_sang","t4_sang","t5_sang","t6_sang"].includes(e);let l="";return n?l=`<div class="row"><div class="tab1">TG Chào cờ:</div><div class="tab2"><input id="chaoco_${e}" type="number" value="40"><span>phút</span></div></div>`:a&&(l=`<div class="row"><div class="tab1">TG Chủ nhiệm:</div><div class="tab2"><input id="chunhiem_${e}" type="number" value="15"><span>phút</span></div></div>`),`\n        <div id="${e}" class="tabcontent">\n          <h3>Cài đặt Lịch ${t} (Buổi ${"sang"===o?"Sáng":"Chiều"})</h3>\n          <div class="row activation-row"><div class="tab1"><b>Kích hoạt lịch:</b></div><div class="tab2"><input type="checkbox" id="enable_${e}" class="enable-checkbox" checked></div></div>\n          <div class="row"><div class="tab1">Giờ vào học:</div><div class="tab2"><input id="gio_${e}" type="time"></div></div>\n          ${l}\n          <div class="row"><div class="tab1">TG Tiết học:</div><div class="tab2"><input id="tiethoc_${e}" type="number" value="45"><span>phút</span></div></div>\n          <div class="row"><div class="tab1">TG Ra chơi:</div><div class="tab2"><input id="rachoi_${e}" type="number" value="5"><span>phút</span></div></div>\n          <div class="row"><div class="tab1">TG Dự vào:</div><div class="tab2"><input id="duvaotiet_${e}" type="number" value="3"><span>phút</span></div></div>\n          <div class="row"><div class="tab1">Số tiết học:</div><div class="tab2"><input id="sotiet_${e}" type="number" value="5"><span>tiết</span></div></div>\n          <input type="button" class="preview-button" onclick="updatePreviewTable('${e}')" value="Cập nhật bảng chi tiết">\n          <h4>Chi tiết lịch chuông</h4>\n          <div class="details-container" id="details-${e}"></div>\n        </div>`},containerSang=document.getElementById("tab-container-sang"),containerChieu=document.getElementById("tab-container-chieu"),days=[{id:"t2",name:"Thứ 2"},{id:"t3",name:"Thứ 3"},{id:"t4",name:"Thứ 4"},{id:"t5",name:"Thứ 5"},{id:"t6",name:"Thứ 6"},{id:"t7",name:"Thứ 7"},{id:"cn",name:"Chủ Nhật"}];days.forEach(e=>{containerSang.innerHTML+=createDayContent(`${e.id}_sang`,e.name,"sang"),containerChieu.innerHTML+=createDayContent(`${e.id}_chieu`,e.name,"chieu")});function populateForm(e){const t=e.schedule?e.schedule:e;t&&t.sohoi&&t.lich?(console.log("Bat dau cap nhat form voi du lieu:",t),t.sohoi&&["batdau","vaotiet","rachoi","duvao"].forEach(e=>{const o=document.getElementById(`sohoi_${e}`);o&&(o.value=t.sohoi[e]||"")}),["sang","chieu"].forEach(e=>{days.forEach(o=>{const n=t.lich?.[e]?.[o.id];if(n){document.getElementById(`enable_${o.id}_${e}`).checked=n.enabled,document.getElementById(`gio_${o.id}_${e}`).value=n.gio||"",document.getElementById(`tiethoc_${o.id}_${e}`).value=n.tiethoc||"",document.getElementById(`rachoi_${o.id}_${e}`).value=n.rachoi||"",document.getElementById(`duvaotiet_${o.id}_${e}`).value=n.duvaotiet||"",document.getElementById(`sotiet_${o.id}_${e}`).value=n.sotiet||"";const t=document.getElementById(`chaoco_${o.id}_${e}`);t&&(t.value=n.chaoco||0);const a=document.getElementById(`chunhiem_${o.id}_${e}`);a&&(a.value=n.chunhiem||0),updatePreviewTable(`${o.id}_${e}`)}})})):console.error("Dữ liệu lịch học nhận được không hợp lệ hoặc không đầy đủ:",e)}function gatherDataFromForm(){const e={sohoi:{},lich:{sang:{},chieu:{}}};return["batdau","vaotiet","rachoi","duvao"].forEach(t=>{e.sohoi[t]=parseInt(document.getElementById(`sohoi_${t}`).value)||0}),["sang","chieu"].forEach(t=>{days.forEach(o=>{const n=e.lich[t][o.id]={};n.enabled=document.getElementById(`enable_${o.id}_${t}`).checked,n.gio=document.getElementById(`gio_${o.id}_${t}`).value,n.tiethoc=parseInt(document.getElementById(`tiethoc_${o.id}_${t}`).value)||0,n.rachoi=parseInt(document.getElementById(`rachoi_${o.id}_${t}`).value)||0,n.duvaotiet=parseInt(document.getElementById(`duvaotiet_${o.id}_${t}`).value)||0,n.sotiet=parseInt(document.getElementById(`sotiet_${o.id}_${t}`).value)||0;const a=document.getElementById(`chaoco_${o.id}_${t}`);a&&(n.chaoco=parseInt(a.value)||0);const l=document.getElementById(`chunhiem_${o.id}_${t}`);l&&(n.chunhiem=parseInt(l.value)||0)})}),e}function openDay(e,t,o){let n;const a=document.getElementsByClassName("tabcontent");for(n=0;n<a.length;n++)a[n].style.display="none";const l=document.getElementsByClassName("tablinks-sang");for(n=0;n<l.length;n++)l[n].className=l[n].className.replace(" active","");const c=document.getElementsByClassName("tablinks-chieu");for(n=0;n<c.length;n++)c[n].className=c[n].className.replace(" active","");document.getElementById(t).style.display="block",e.currentTarget.className+=" active"}function timeToMinute(e){if(!e)return 0;const[t,o]=e.split(":").map(Number);return 60*t+o}function minuteToTime(e){const t=Math.floor(e/60).toString().padStart(2,"0"),o=(e%60).toString().padStart(2,"0");return`${t}:${o}`}function calculateSchedule(e){const t=e=>parseInt(document.getElementById(e)?.value)||0,o=e=>timeToMinute(document.getElementById(e).value),n=o(`gio_${e}`),a=t(`tiethoc_${e}`),l=t(`rachoi_${e}`),c=t(`duvaotiet_${e}`),s=t(`sotiet_${e}`),i=t(`chaoco_${e}`),d=t(`chunhiem_${e}`);let r=[],u=n;if(i>0)c>0&&r.push({time:u,description:"Dự vào"}),u+=c,r.push({time:u,description:"Chào cờ"}),u+=i,r.push({time:u,description:"Vào tiết 1"});else if(d>0)r.push({time:u,description:"Bắt đầu SH"}),c>0&&r.push({time:u+d,description:"Dự vào tiết 1"}),u=u+d+c,r.push({time:u,description:"Vào tiết 1"});else r.push({time:u,description:"Vào tiết 1"});for(let e=1;e<=s;e++){let t=u+a;e<s?(l>0&&r.push({time:t,description:`Ra chơi tiết ${e}`}),u=(t+=l)+c,c>0&&r.push({time:t,description:`Dự vào tiết ${e+1}`}),r.push({time:u,description:`Vào tiết ${e+1}`}))  :l>0&&r.push({time:t,description:"Ra về"})}const m=Array.from(new Map(r.map(e=>[e.time,e])).values());return m.map(e=>({...e,time:minuteToTime(e.time)})).sort((e,t)=>timeToMinute(e.time)-timeToMinute(t.time))}function updatePreviewTable(e){const t=document.getElementById(`enable_${e}`).checked,o=document.getElementById("details-"+e);if(!o)return;if(!t)return void(o.innerHTML="<p>Lịch này đang tắt.</p>");const n=calculateSchedule(e);let a="<table><thead><tr><th>STT</th><th>Thời gian</th><th>Nội dung</th></tr></thead><tbody>";n.forEach((e,t)=>{a+=`<tr><td>${t+1}</td><td>${e.time}</td><td>${e.description}</td></tr>`}),a+="</tbody></table>",o.innerHTML=a}
+    
+    // XÓA BỎ CÁC LỆNH TỰ ĐỘNG MỞ TAB KHI KHỞI ĐỘNG
+    window.onload = function() { 
+        connectToMqtt();
+        setInterval(updateLocalClock, 1000);
+    };
+  </script>
 </body>
 </html>
