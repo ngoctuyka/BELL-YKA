@@ -6,97 +6,272 @@
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js" type="text/javascript"></script>
   
   <style type="text/css">
-    body{ background: #1e1e1e; font-family: Verdana, sans-serif; color: #f0f0f0; }
-    #main{ margin: 10px auto; width: 360px; }
-    #content{ background-color: #2a2a2a; border: 1px solid #444; width: 360px; float: left; border-radius: 8px; padding-bottom: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
-    h2 { font-size: 1.4em; margin-top: 20px; margin-bottom: 10px; text-align: center; color: #ffa500; text-shadow: 0 0 5px rgba(255, 165, 0, 0.5); }
-    h3{ margin-top: 25px; margin-bottom: 20px; text-align: center; font-size: 1.2em; font-weight: bold; }
-    #header-sang { color: #66ff99; }
-    #header-chieu { color: #66ccff; }
-    h4 { text-align: center; color: yellow; border-top: 1px solid #444; padding-top: 15px; margin-top: 15px; }
-    hr { border: 1px solid #444; margin: 25px 15px; }
-    .div1{ padding: 0 15px; float: left; margin-bottom: 10px; width: 100%; box-sizing: border-box; }
-    .tab1{ width: 150px; float: left; line-height: 25px; }
-    .tab2{ width: 180px; float: left; display: flex; align-items: center; justify-content: space-between; }
-    input[type="number"], input[type="time"]{ width: 80px; float: left; margin-right: 10px; background-color: #333; border: 1px solid #555; color: white; border-radius: 4px; padding: 5px; }
-    input[type="checkbox"].enable-checkbox { width: 18px; height: 18px; transform: scale(1.1); margin-top: 1px; flex-shrink: 0; }
-    .row{ margin-bottom: 8px; float: left; width: 100%; min-height: 35px; display: flex; align-items: center; }
-    .activation-row .tab1 b { font-size: 0.95em; font-weight: normal; }
-    .activation-row .tab2 { justify-content: flex-start; }
-    
-    .status-bar { padding: 8px 15px; margin-bottom: 10px; text-align: center; font-weight: bold; border-radius: 4px; transition: background-color 0.5s; }
-    .status-connected { background-color: #28a745; color: white; }
-    .status-disconnected { background-color: #dc3545; color: white; }
-    .status-connecting { background-color: #6c757d; color: white; }
-
-    .clock-container { text-align: center; margin: 15px; background-color: #1a1a1a; border: solid 1px #ffa500; border-radius: 8px; padding: 10px 5px; box-shadow: inset 0 0 10px rgba(255, 165, 0, 0.3); }
-    .clock { font-size: 2.5em; width: 100%; color: yellow; letter-spacing: 2px; }
-    .date-display { font-size: 0.9em; color: white; margin-top: 4px; }
-    
-    .button-container { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 20px; padding: 0 15px; }
-    input[type="button"] { padding: 12px 5px; font-size: 0.9em; font-weight: bold; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-    
-    .preview-button { background-image: linear-gradient(to top, #4CAF50, #5cdb61); color: white; margin-top: 10px; width: 100%;}
-    .save-button { background-image: linear-gradient(to top, #008CBA, #00a8e0); color: white; }
-    .test-button { background-image: linear-gradient(to top, #f44336, #f65a4c); color: white; }
-    .tab { display: flex; justify-content: space-around; border-bottom: 1px solid #444; margin: 0 15px 15px 15px;}
-    .tab button { flex-grow: 1; border: 1px solid #444; border-bottom: none; outline: none; cursor: pointer; padding: 10px 5px; transition: all 0.3s; font-size: 0.85em; color: #ccc; font-weight: bold; background-color: #333; margin: 0 2px -1px 2px; border-radius: 6px 6px 0 0; }
-    #tab_sang button.active { background-color: #66ff99; color: #111; border-color: #66ff99; }
-    #tab_chieu button.active { background-color: #66ccff; color: #111; border-color: #66ccff; }
-    .tabcontent { display: none; padding: 0 15px;}
-    .details-container table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    .details-container th, .details-container td { border: 1px solid #444; padding: 8px; text-align: center; font-size:13px; }
-    .details-container th { background-color: #3a3a3a; }
-    a#logout-link { color: #ff6b6b; cursor: pointer; }
-    
-    details {
-        border: 1px solid #444;
-        border-radius: 6px;
-        margin-bottom: 10px;
-        background-color: #333;
+    body {
+        background: #2c3e50; /* Nền xanh đậm - xám */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #ecf0f1; /* Chữ màu trắng nhạt */
     }
+
+    #main {
+        margin: 15px auto;
+        width: 380px;
+    }
+
+    #content {
+        background-color: #34495e; /* Nền xanh xám đậm hơn */
+        border: 1px solid #4a627a;
+        width: 100%;
+        float: left;
+        border-radius: 12px;
+        padding-bottom: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        border-top: 1px solid #5b7da0;
+    }
+
+    h2 {
+        font-size: 1.5em;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        text-align: center;
+        color: #f1c40f; /* Vàng sáng */
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    h3 {
+        margin-top: 25px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 1.3em;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    #header-sang {
+        color: #2ecc71; /* Xanh lá cây */
+        text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+    }
+
+    #header-chieu {
+        color: #3498db; /* Xanh dương */
+        text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+    }
+    
+    hr {
+        border: none;
+        height: 1px;
+        background-color: #4a627a;
+        margin: 25px 15px;
+    }
+
+    .div1 {
+        padding: 0 15px;
+        float: left;
+        margin-bottom: 10px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .tab1 {
+        width: 150px;
+        float: left;
+        line-height: 25px;
+    }
+
+    .tab2 {
+        width: 180px;
+        float: left;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    input[type="number"],
+    input[type="time"] {
+        width: 85px;
+        float: left;
+        margin-right: 10px;
+        background-color: #2c3e50;
+        border: 1px solid #555;
+        color: white;
+        border-radius: 5px;
+        padding: 8px;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    input[type="checkbox"].enable-checkbox {
+        width: 22px;
+        height: 22px;
+        transform: scale(1.1);
+        margin-top: 1px;
+        flex-shrink: 0;
+        cursor: pointer;
+    }
+    
+    .row {
+        margin-bottom: 10px;
+        float: left;
+        width: 100%;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .status-bar {
+        padding: 10px 15px;
+        margin-bottom: 15px;
+        text-align: center;
+        font-weight: bold;
+        border-radius: 6px;
+        transition: all 0.5s;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .status-connected { background-color: #27ae60; color: white; }
+    .status-disconnected { background-color: #c0392b; color: white; }
+    .status-connecting { background-color: #7f8c8d; color: white; }
+
+    .clock-container {
+        text-align: center;
+        margin: 20px 15px;
+        background-color: #2c3e50;
+        border: 1px solid #f1c40f;
+        border-radius: 10px;
+        padding: 15px 10px;
+        box-shadow: inset 0 0 15px rgba(241, 196, 15, 0.3), 0 2px 5px rgba(0,0,0,0.3);
+    }
+
+    .clock {
+        font-size: 2.8em;
+        width: 100%;
+        color: #f1c40f; /* Vàng */
+        letter-spacing: 3px;
+        font-family: 'Courier New', Courier, monospace;
+        text-shadow: 0 0 8px rgba(241, 196, 15, 0.7);
+    }
+    
+    .date-display { font-size: 1em; color: #ecf0f1; margin-top: 5px; }
+
+    /* --- HIỆU ỨNG NÚT BẤM 3D --- */
+    .button-container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 15px;
+        margin-top: 20px;
+        padding: 0 15px;
+    }
+
+    input[type="button"] {
+        padding: 14px 8px;
+        font-size: 0.95em;
+        font-weight: bold;
+        border-radius: 8px;
+        border: 1px solid rgba(0,0,0,0.2);
+        cursor: pointer;
+        transition: all 0.1s ease-out;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        
+        /* Hiệu ứng 3D */
+        border-bottom: 4px solid;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+    
+    input[type="button"]:active {
+        /* Hiệu ứng khi nhấn xuống */
+        transform: translateY(3px);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+    
+    .save-button {
+        background-color: #2980b9; /* Xanh dương đậm */
+        border-color: #206390;
+    }
+
+    .test-button {
+        background-color: #e74c3c; /* Đỏ */
+        border-color: #b83c2f;
+    }
+
+    .preview-button {
+        background-color: #27ae60; /* Xanh lá */
+        border-color: #1f8a4c;
+        margin-top: 10px;
+        width: 100%;
+    }
+    /* --- KẾT THÚC HIỆU ỨNG 3D --- */
+
+    .tab {
+        display: flex;
+        justify-content: space-around;
+        border-bottom: 2px solid #4a627a;
+        margin: 0 15px 15px 15px;
+    }
+    
+    .tab button {
+        flex-grow: 1;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 12px 5px;
+        transition: all 0.3s;
+        font-size: 0.85em;
+        color: #bdc3c7;
+        font-weight: bold;
+        background-color: transparent;
+        border-radius: 8px 8px 0 0;
+        margin: 0 2px;
+        border-bottom: 4px solid transparent;
+        position: relative;
+        top: 2px;
+    }
+
+    #tab_sang button.active {
+        color: #2ecc71;
+        border-bottom-color: #2ecc71;
+    }
+
+    #tab_chieu button.active {
+        color: #3498db;
+        border-bottom-color: #3498db;
+    }
+
+    .tabcontent { display: none; padding: 0 15px; }
+
+    details {
+        border: 1px solid #4a627a;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        background-color: #2c3e50;
+    }
+
     summary {
         font-weight: bold;
-        padding: 10px;
+        padding: 12px 15px;
         cursor: pointer;
         outline: none;
-        color: #ffa500;
-    }
-    .details-content {
-        padding: 0 10px 10px 10px;
-        border-top: 1px solid #444;
-        margin-top: 10px;
+        color: #f1c40f;
     }
 
-    .tabcontent h3 { font-size: 1.05em; margin-top: 20px; margin-bottom: 15px; }
-    #header-sohoi {
-        color: #ffc107;
-        text-align: center;
-    }
     #header-sohoi span {
         display: block;
         font-size: 0.8em;
         font-weight: normal;
         color: #ccc;
-        margin-top: 2px;
+        margin-top: 4px;
     }
-    .settings-section .tab1 { width: 140px; }
-    .settings-section .tab2 { width: 110px; }
-    .copy-button {
-        margin-left: auto;
-        padding: 4px 8px;
-        font-size: 0.8em;
-        color: white;
-        border: none;
-        border-radius: 4px;
+    
+    a#logout-link {
+        color: #e74c3c;
         cursor: pointer;
-        transition: background-color 0.2s;
+        text-decoration: none;
+        font-weight: bold;
     }
-    .copy-button.sang { background-color: #28a745; }
-    .copy-button.sang:hover { background-color: #218838; }
-    .copy-button.chieu { background-color: #007bff; }
-    .copy-button.chieu:hover { background-color: #0069d9; }
-  </style>
+    a#logout-link:hover { text-decoration: underline; }
+</style>
 </head>
 <body>
   <div id="main">
