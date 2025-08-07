@@ -23,17 +23,15 @@
     .row{ margin-bottom: 8px; float: left; width: 100%; min-height: 35px; display: flex; align-items: center; }
     .activation-row .tab1 b { font-size: 0.95em; font-weight: normal; }
     
-    /* CSS CHO TRẠNG THÁI KẾT NỐI */
     .status-bar { padding: 8px 15px; margin-bottom: 10px; text-align: center; font-weight: bold; border-radius: 4px; transition: background-color 0.5s; }
     .status-connected { background-color: #28a745; color: white; }
     .status-disconnected { background-color: #dc3545; color: white; }
-    .status-connecting { background-color: #6c757d; color: white; } /* Màu xám cho trạng thái đang kết nối */
+    .status-connecting { background-color: #6c757d; color: white; }
 
     .clock-container { text-align: center; margin: 15px; background-color: #1a1a1a; border: solid 1px #ffa500; border-radius: 8px; padding: 10px 5px; box-shadow: inset 0 0 10px rgba(255, 165, 0, 0.3); }
     .clock { font-size: 2.5em; width: 100%; color: yellow; letter-spacing: 2px; }
     .date-display { font-size: 0.9em; color: white; margin-top: 4px; }
     
-    /* CSS ĐÃ SỬA: Điều chỉnh lại bố cục và font chữ của nút */
     .button-container { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 20px; padding: 0 15px; }
     input[type="button"] { padding: 12px 5px; font-size: 0.9em; font-weight: bold; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
     
@@ -50,7 +48,6 @@
     .details-container th { background-color: #3a3a3a; }
     a#logout-link { color: #ff6b6b; cursor: pointer; }
     
-    /* CSS MỚI CHO CÁC MỤC THU GỌN */
     details {
         border: 1px solid #444;
         border-radius: 6px;
@@ -70,7 +67,6 @@
         margin-top: 10px;
     }
 
-    /* CSS MỚI: Thu nhỏ font chữ và đổi style tiêu đề */
     .tabcontent h3 { font-size: 1.05em; margin-top: 20px; margin-bottom: 15px; }
     #header-sohoi {
         color: #ffc107;
@@ -90,10 +86,10 @@
 <body>
   <div id="main">
     <div id="content">
-      <div style="text-align: center;">
-        <h2>CHUÔNG BÁO TỰ ĐỘNG        (THPT YÊN KHÁNH A)</h2>
+      <div style="text-align: center; padding: 15px 0 5px 0;">
+        <h2 style="margin: 0; padding: 0; color: #ffa500; text-shadow: 0 0 5px rgba(255, 165, 0, 0.5);">CHUÔNG BÁO TỰ ĐỘNG</h2>
+        <p style="margin: 5px 0 0 0; padding: 0; font-size: 1.2em; color: #f0f0f0; font-weight: bold;">THPT YÊN KHÁNH A</p>
       </div>
-
       <div class="clock-container" id="clock-wrapper" style="display: none;">
         <div id="clock" class="clock">--:--:--</div>
         <div id="date" class="date-display">Đang chờ đồng bộ...</div>
@@ -225,14 +221,13 @@
     function _load(e){try{const t=JSON.parse(e);t.schedule&&t.epoch&&(setTime(t.epoch),populateForm(t))}catch(t){console.error("Lỗi parse JSON từ MQTT:",t)}}function publishUpdate(){if(!client||!client.connected)return void alert("Chưa kết nối đến máy chủ. Vui lòng đợi hoặc kiểm tra lại kết nối mạng.");try{const e=gatherDataFromForm(),t=JSON.stringify({schedule:e});client.publish(SET_DATA_TOPIC,t,{qos:1,retain:!0}),alert("Đã gửi lệnh cập nhật thành công!")}catch(e){alert("Lỗi khi thu thập dữ liệu từ form: "+e.message),console.error(e)}}function publishTestBell(){client&&client.connected?client.publish(CONTROL_TOPIC,"TEST_BELL",{qos:1}):alert("Chưa kết nối đến máy chủ. Vui lòng đợi hoặc kiểm tra lại kết nối mạng.")}function logout(){sessionStorage.removeItem("isLoggedIn"),window.location.href="login.html"}function setTime(e){isNaN(e)||e<1e5?(console.log("Invalid epoch received, clock not set:",e),serverTime=null):(serverTime=new Date(1e3*e),document.getElementById("date").innerHTML=serverTime.toLocaleDateString("vi-VN",{weekday:"long",year:"numeric",month:"long",day:"numeric",timeZone:"Asia/Ho_Chi_Minh"}),updateLocalClock())}function updateLocalClock(){serverTime&&(serverTime.setSeconds(serverTime.getSeconds()+1),document.getElementById("clock").innerHTML=serverTime.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",second:"2-digit",timeZone:"Asia/Ho_Chi_Minh",hour12:!1}))}
     
     const createDayContent = (dayId, dayName, session) => {
-        const hasChaoCo = (dayId === 't2_sang');
-        const hasChuNhiem = (session === 'sang' && ['t3_sang', 't4_sang', 't5_sang', 't6_sang'].includes(dayId));
+        const hasChuNhiem = (session === 'sang' && ['t3_sang', 't4_sang', 't5_sang', 't6_sang', 't7_sang'].includes(dayId));
+        
         let specialPeriod = '';
-        if (hasChaoCo) {
-            specialPeriod = `<div class="row"><div class="tab1">TG Chào cờ:</div><div class="tab2"><input id="chaoco_${dayId}" type="number" value="40"><span>phút</span></div></div>`;
-        } else if (hasChuNhiem) {
+        if (hasChuNhiem) {
             specialPeriod = `<div class="row"><div class="tab1">TG Chủ nhiệm:</div><div class="tab2"><input id="chunhiem_${dayId}" type="number" value="15"><span>phút</span></div></div>`;
         }
+
         return `
         <div id="${dayId}" class="tabcontent">
           <h3>Cài đặt Lịch ${dayName} (Buổi ${session === 'sang' ? 'Sáng' : 'Chiều'})</h3>
@@ -250,7 +245,18 @@
           <input type="button" class="preview-button" onclick="updatePreviewTable('${dayId}')" value="Cập nhật bảng chi tiết">
         </div>`;
     };
-    const containerSang=document.getElementById("tab-container-sang"),containerChieu=document.getElementById("tab-container-chieu"),days=[{id:"t2",name:"Thứ 2"},{id:"t3",name:"Thứ 3"},{id:"t4",name:"Thứ 4"},{id:"t5",name:"Thứ 5"},{id:"t6",name:"Thứ 6"},{id:"t7",name:"Thứ 7"},{id:"cn",name:"Chủ Nhật"}];days.forEach(e=>{containerSang.innerHTML+=createDayContent(`${e.id}_sang`,e.name,"sang"),containerChieu.innerHTML+=createDayContent(`${e.id}_chieu`,e.name,"chieu")});function populateForm(e){const t=e.schedule?e.schedule:e;t&&t.sohoi&&t.lich?(console.log("Bat dau cap nhat form voi du lieu:",t),t.sohoi&&["batdau","vaotiet","rachoi","duvao"].forEach(e=>{const o=document.getElementById(`sohoi_${e}`);o&&(o.value=t.sohoi[e]||"")}),["sang","chieu"].forEach(e=>{days.forEach(o=>{const n=t.lich?.[e]?.[o.id];if(n){document.getElementById(`enable_${o.id}_${e}`).checked=n.enabled,document.getElementById(`gio_${o.id}_${e}`).value=n.gio||"",document.getElementById(`tiethoc_${o.id}_${e}`).value=n.tiethoc||"",document.getElementById(`rachoi_${o.id}_${e}`).value=n.rachoi||"",document.getElementById(`duvaotiet_${o.id}_${e}`).value=n.duvaotiet||"",document.getElementById(`sotiet_${o.id}_${e}`).value=n.sotiet||"";const t=document.getElementById(`chaoco_${o.id}_${e}`);t&&(t.value=n.chaoco||0);const a=document.getElementById(`chunhiem_${o.id}_${e}`);a&&(a.value=n.chunhiem||0),updatePreviewTable(`${o.id}_${e}`)}})})):console.error("Dữ liệu lịch học nhận được không hợp lệ hoặc không đầy đủ:",e)}function gatherDataFromForm(){const e={sohoi:{},lich:{sang:{},chieu:{}}};return["batdau","vaotiet","rachoi","duvao"].forEach(t=>{e.sohoi[t]=parseInt(document.getElementById(`sohoi_${t}`).value)||0}),["sang","chieu"].forEach(t=>{days.forEach(o=>{const n=e.lich[t][o.id]={};n.enabled=document.getElementById(`enable_${o.id}_${t}`).checked,n.gio=document.getElementById(`gio_${o.id}_${t}`).value,n.tiethoc=parseInt(document.getElementById(`tiethoc_${o.id}_${t}`).value)||0,n.rachoi=parseInt(document.getElementById(`rachoi_${o.id}_${t}`).value)||0,n.duvaotiet=parseInt(document.getElementById(`duvaotiet_${o.id}_${t}`).value)||0,n.sotiet=parseInt(document.getElementById(`sotiet_${o.id}_${t}`).value)||0;const a=document.getElementById(`chaoco_${o.id}_${t}`);a&&(n.chaoco=parseInt(a.value)||0);const l=document.getElementById(`chunhiem_${o.id}_${t}`);l&&(n.chunhiem=parseInt(l.value)||0)})}),e}function openDay(e,t,o){let n;const a=document.getElementsByClassName("tabcontent");for(n=0;n<a.length;n++)a[n].style.display="none";const l=document.getElementsByClassName("tablinks-sang");for(n=0;n<l.length;n++)l[n].className=l[n].className.replace(" active","");const c=document.getElementsByClassName("tablinks-chieu");for(n=0;n<c.length;n++)c[n].className=c[n].className.replace(" active","");document.getElementById(t).style.display="block",e.currentTarget.className+=" active"}function timeToMinute(e){if(!e)return 0;const[t,o]=e.split(":").map(Number);return 60*t+o}function minuteToTime(e){const t=Math.floor(e/60).toString().padStart(2,"0"),o=(e%60).toString().padStart(2,"0");return`${t}:${o}`}function calculateSchedule(e){const t=e=>parseInt(document.getElementById(e)?.value)||0,o=e=>timeToMinute(document.getElementById(e).value),n=o(`gio_${e}`),a=t(`tiethoc_${e}`),l=t(`rachoi_${e}`),c=t(`duvaotiet_${e}`),s=t(`sotiet_${e}`),i=t(`chaoco_${e}`),d=t(`chunhiem_${e}`);let r=[],u=n;if(i>0)c>0&&r.push({time:u,description:"Dự vào"}),u+=c,r.push({time:u,description:"Chào cờ"}),u+=i,r.push({time:u,description:"Vào tiết 1"});else if(d>0)r.push({time:u,description:"Bắt đầu SH"}),c>0&&r.push({time:u+d,description:"Dự vào tiết 1"}),u=u+d+c,r.push({time:u,description:"Vào tiết 1"});else r.push({time:u,description:"Vào tiết 1"});for(let e=1;e<=s;e++){let t=u+a;e<s?(l>0&&r.push({time:t,description:`Ra chơi tiết ${e}`}),u=(t+=l)+c,c>0&&r.push({time:t,description:`Dự vào tiết ${e+1}`}),r.push({time:u,description:`Vào tiết ${e+1}`}))  :l>0&&r.push({time:t,description:"Ra về"})}const m=Array.from(new Map(r.map(e=>[e.time,e])).values());return m.map(e=>({...e,time:minuteToTime(e.time)})).sort((e,t)=>timeToMinute(e.time)-timeToMinute(t.time))}function updatePreviewTable(e){const t=document.getElementById(`enable_${e}`).checked,o=document.getElementById("details-"+e);if(!o)return;if(!t)return void(o.innerHTML="<p>Lịch này đang tắt.</p>");const n=calculateSchedule(e);let a="<table><thead><tr><th>STT</th><th>Thời gian</th><th>Nội dung</th></tr></thead><tbody>";n.forEach((e,t)=>{a+=`<tr><td>${t+1}</td><td>${e.time}</td><td>${e.description}</td></tr>`}),a+="</tbody></table>",o.innerHTML=a}
+
+    const containerSang=document.getElementById("tab-container-sang"),containerChieu=document.getElementById("tab-container-chieu"),days=[{id:"t2",name:"Thứ 2"},{id:"t3",name:"Thứ 3"},{id:"t4",name:"Thứ 4"},{id:"t5",name:"Thứ 5"},{id:"t6",name:"Thứ 6"},{id:"t7",name:"Thứ 7"},{id:"cn",name:"Chủ Nhật"}];days.forEach(e=>{containerSang.innerHTML+=createDayContent(`${e.id}_sang`,e.name,"sang"),containerChieu.innerHTML+=createDayContent(`${e.id}_chieu`,e.name,"chieu")});
+    
+    function populateForm(e){const t=e.schedule?e.schedule:e;t&&t.sohoi&&t.lich?(console.log("Bat dau cap nhat form voi du lieu:",t),t.sohoi&&["batdau","vaotiet","rachoi","duvao"].forEach(e=>{const o=document.getElementById(`sohoi_${e}`);o&&(o.value=t.sohoi[e]||"")}),["sang","chieu"].forEach(e=>{days.forEach(o=>{const n=t.lich?.[e]?.[o.id];if(n){document.getElementById(`enable_${o.id}_${e}`).checked=n.enabled,document.getElementById(`gio_${o.id}_${e}`).value=n.gio||"",document.getElementById(`tiethoc_${o.id}_${e}`).value=n.tiethoc||"",document.getElementById(`rachoi_${o.id}_${e}`).value=n.rachoi||"",document.getElementById(`duvaotiet_${o.id}_${e}`).value=n.duvaotiet||"",document.getElementById(`sotiet_${o.id}_${e}`).value=n.sotiet||"";const t=document.getElementById(`chunhiem_${o.id}_${e}`);t&&(t.value=n.chunhiem||0),updatePreviewTable(`${o.id}_${e}`)}})})):console.error("Dữ liệu lịch học nhận được không hợp lệ hoặc không đầy đủ:",e)}
+    
+    function gatherDataFromForm(){const e={sohoi:{},lich:{sang:{},chieu:{}}};return["batdau","vaotiet","rachoi","duvao"].forEach(t=>{e.sohoi[t]=parseInt(document.getElementById(`sohoi_${t}`).value)||0}),["sang","chieu"].forEach(t=>{days.forEach(o=>{const n=e.lich[t][o.id]={};n.enabled=document.getElementById(`enable_${o.id}_${t}`).checked,n.gio=document.getElementById(`gio_${o.id}_${t}`).value,n.tiethoc=parseInt(document.getElementById(`tiethoc_${o.id}_${t}`).value)||0,n.rachoi=parseInt(document.getElementById(`rachoi_${o.id}_${t}`).value)||0,n.duvaotiet=parseInt(document.getElementById(`duvaotiet_${o.id}_${t}`).value)||0,n.sotiet=parseInt(document.getElementById(`sotiet_${o.id}_${t}`).value)||0;const a=document.getElementById(`chunhiem_${o.id}_${t}`);a&&(n.chunhiem=parseInt(a.value)||0)})}),e}
+    
+    function openDay(e,t,o){let n;const a=document.getElementsByClassName("tabcontent");for(n=0;n<a.length;n++)a[n].style.display="none";const l=document.getElementsByClassName("tablinks-sang");for(n=0;n<l.length;n++)l[n].className=l[n].className.replace(" active","");const c=document.getElementsByClassName("tablinks-chieu");for(n=0;n<c.length;n++)c[n].className=c[n].className.replace(" active","");document.getElementById(t).style.display="block",e.currentTarget.className+=" active"}function timeToMinute(e){if(!e)return 0;const[t,o]=e.split(":").map(Number);return 60*t+o}function minuteToTime(e){const t=Math.floor(e/60).toString().padStart(2,"0"),o=(e%60).toString().padStart(2,"0");return`${t}:${o}`}
+    
+    function calculateSchedule(e){const t=e=>parseInt(document.getElementById(e)?.value)||0,o=e=>timeToMinute(document.getElementById(e).value),n=o(`gio_${e}`),a=t(`tiethoc_${e}`),l=t(`rachoi_${e}`),c=t(`duvaotiet_${e}`),s=t(`sotiet_${e}`),d=t(`chunhiem_${e}`);let r=[],u=n;if(d>0)r.push({time:u,description:"Bắt đầu SH"}),c>0&&r.push({time:u+d,description:"Dự vào tiết 1"}),u=u+d+c,r.push({time:u,description:"Vào tiết 1"});else r.push({time:u,description:"Vào tiết 1"});for(let e=1;e<=s;e++){let t=u+a;e<s?(l>0&&r.push({time:t,description:`Ra chơi tiết ${e}`}),u=(t+=l)+c,c>0&&r.push({time:t,description:`Dự vào tiết ${e+1}`}),r.push({time:u,description:`Vào tiết ${e+1}`}))  :l>0&&r.push({time:t,description:"Ra về"})}const m=Array.from(new Map(r.map(e=>[e.time,e])).values());return m.map(e=>({...e,time:minuteToTime(e.time)})).sort((e,t)=>timeToMinute(e.time)-timeToMinute(t.time))}
+    
+    function updatePreviewTable(e){const t=document.getElementById(`enable_${e}`).checked,o=document.getElementById("details-"+e);if(!o)return;if(!t)return void(o.innerHTML="<p>Lịch này đang tắt.</p>");const n=calculateSchedule(e);let a="<table><thead><tr><th>STT</th><th>Thời gian</th><th>Nội dung</th></tr></thead><tbody>";n.forEach((e,t)=>{a+=`<tr><td>${t+1}</td><td>${e.time}</td><td>${e.description}</td></tr>`}),a+="</tbody></table>",o.innerHTML=a}
     
     window.onload = function() { 
         connectToMqtt();
@@ -259,5 +265,3 @@
   </script>
 </body>
 </html>
-
-
