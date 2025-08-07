@@ -17,11 +17,12 @@
     hr { border: 1px solid #444; margin: 25px 15px; }
     .div1{ padding: 0 15px; float: left; margin-bottom: 10px; width: 100%; box-sizing: border-box; }
     .tab1{ width: 150px; float: left; line-height: 25px; }
-    .tab2{ width: 180px; float: left; display: flex; align-items: center; }
+    .tab2{ width: 180px; float: left; display: flex; align-items: center; justify-content: space-between; }
     input[type="number"], input[type="time"]{ width: 80px; float: left; margin-right: 10px; background-color: #333; border: 1px solid #555; color: white; border-radius: 4px; padding: 5px; }
-    input[type="checkbox"].enable-checkbox { width: 18px; height: 18px; transform: scale(1.1); margin-top: 1px; }
+    input[type="checkbox"].enable-checkbox { width: 18px; height: 18px; transform: scale(1.1); margin-top: 1px; flex-shrink: 0; }
     .row{ margin-bottom: 8px; float: left; width: 100%; min-height: 35px; display: flex; align-items: center; }
     .activation-row .tab1 b { font-size: 0.95em; font-weight: normal; }
+    .activation-row .tab2 { justify-content: flex-start; }
     
     .status-bar { padding: 8px 15px; margin-bottom: 10px; text-align: center; font-weight: bold; border-radius: 4px; transition: background-color 0.5s; }
     .status-connected { background-color: #28a745; color: white; }
@@ -82,19 +83,19 @@
     .settings-section .tab1 { width: 140px; }
     .settings-section .tab2 { width: 110px; }
     .copy-button {
-        margin-left: 15px;
+        margin-left: auto;
         padding: 4px 8px;
         font-size: 0.8em;
-        background-color: #6c757d;
         color: white;
         border: none;
         border-radius: 4px;
         cursor: pointer;
         transition: background-color 0.2s;
     }
-    .copy-button:hover {
-        background-color: #5a6268;
-    }
+    .copy-button.sang { background-color: #28a745; }
+    .copy-button.sang:hover { background-color: #218838; }
+    .copy-button.chieu { background-color: #007bff; }
+    .copy-button.chieu:hover { background-color: #0069d9; }
   </style>
 </head>
 <body>
@@ -102,7 +103,7 @@
     <div id="content">
       <div style="text-align: center; padding: 15px 0 5px 0;">
         <h2 style="margin: 0; padding: 0; color: #ffa500; text-shadow: 0 0 5px rgba(255, 165, 0, 0.5);">CHUÔNG BÁO TỰ ĐỘNG</h2>
-        <p style="margin: 5px 0 0 0; padding: 0; font-size: 1.2em; color: #f0f0f0; font-weight: bold;">THPT YÊN KHÁNH A</p>
+        <p style="margin: 5px 0 0 0; padding: 0; font-size: 1.2em; color: #f0f0f0; font-weight: bold;">TT NEWSTAR</p>
       </div>
       <div class="clock-container" id="clock-wrapper" style="display: none;">
         <div id="clock" class="clock">--:--:--</div>
@@ -169,7 +170,7 @@
     
     let client,serverTime=null;
     
-    const brokerUrl="wss://366af3ec40124749863257ecd2c62b3e.s1.eu.hivemq.cloud:8884/mqtt";
+    const brokerUrl="wss://102a662407384e829f82d57c47a5f255.s1.eu.hivemq.cloud:8884/mqtt";
     const options={username:"ngoctuyka",password:"Tu12345678@",clientId:"WebAppClient_"+parseInt(1e3*Math.random()),reconnectPeriod:2e3};
     
     const ONLINE_STATUS_TOPIC = "esp32/bell/status/online";
@@ -249,9 +250,9 @@
         const isMorningCopyable = (session === 'sang' && ['t3_sang', 't4_sang', 't5_sang', 't6_sang', 't7_sang'].includes(dayId));
 
         if (session === 'chieu') {
-            copyButton = `<button class="copy-button" onclick="copyAfternoonSchedule('${dayId}')">Sao chép đến</button>`;
+            copyButton = `<button class="copy-button chieu" onclick="copyAfternoonSchedule('${dayId}')">Sao chép đến</button>`;
         } else if (isMorningCopyable) {
-            copyButton = `<button class="copy-button" onclick="copyMorningSchedule('${dayId}')">Sao chép đến</button>`;
+            copyButton = `<button class="copy-button sang" onclick="copyMorningSchedule('${dayId}')">Sao chép đến</button>`;
         }
 
         return `
