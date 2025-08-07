@@ -23,7 +23,7 @@
     .row{ margin-bottom: 8px; float: left; width: 100%; min-height: 35px; display: flex; align-items: center; }
     .activation-row .tab1 b { font-size: 0.95em; font-weight: normal; }
     
-    /* CSS MỚI CHO TRẠNG THÁI KẾT NỐI */
+    /* CSS CHO TRẠNG THÁI KẾT NỐI */
     .status-bar { padding: 8px 15px; margin-bottom: 10px; text-align: center; font-weight: bold; border-radius: 4px; transition: background-color 0.5s; }
     .status-connected { background-color: #28a745; color: white; }
     .status-disconnected { background-color: #dc3545; color: white; }
@@ -32,8 +32,11 @@
     .clock-container { text-align: center; margin: 15px; background-color: #1a1a1a; border: solid 1px #ffa500; border-radius: 8px; padding: 10px 5px; box-shadow: inset 0 0 10px rgba(255, 165, 0, 0.3); }
     .clock { font-size: 2.5em; width: 100%; color: yellow; letter-spacing: 2px; }
     .date-display { font-size: 0.9em; color: white; margin-top: 4px; }
-    .button-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; padding: 0 15px; }
-    input[type="button"] { padding: 12px; font-size: 1em; font-weight: bold; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    
+    /* CSS ĐÃ SỬA: Điều chỉnh lại bố cục và font chữ của nút */
+    .button-container { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 20px; padding: 0 15px; }
+    input[type="button"] { padding: 12px 5px; font-size: 0.9em; font-weight: bold; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    
     .preview-button { background-image: linear-gradient(to top, #4CAF50, #5cdb61); color: white; margin-top: 10px; width: 100%;}
     .save-button { background-image: linear-gradient(to top, #008CBA, #00a8e0); color: white; }
     .test-button { background-image: linear-gradient(to top, #f44336, #f65a4c); color: white; }
@@ -66,6 +69,22 @@
         border-top: 1px solid #444;
         margin-top: 10px;
     }
+
+    /* CSS MỚI: Thu nhỏ font chữ và đổi style tiêu đề */
+    .tabcontent h3 { font-size: 1.05em; margin-top: 20px; margin-bottom: 15px; }
+    #header-sohoi {
+        color: #ffc107;
+        text-align: center;
+    }
+    #header-sohoi span {
+        display: block;
+        font-size: 0.8em;
+        font-weight: normal;
+        color: #ccc;
+        margin-top: 2px;
+    }
+    .settings-section .tab1 { width: 140px; }
+    .settings-section .tab2 { width: 110px; }
   </style>
 </head>
 <body>
@@ -110,7 +129,10 @@
       
       <div class="div1">
           <details>
-              <summary>Cài đặt số hồi chuông (Chung)</summary>
+              <summary id="header-sohoi">
+                  <div>CÀI ĐẶT SỐ HỒI CHUÔNG</div>
+                  <span>(SÁNG - CHIỀU)</span>
+              </summary>
               <div class="details-content">
                   <div class="row"><div class="tab1">Bắt đầu buổi học:</div><div class="tab2"><input id="sohoi_batdau" type="number" value="6"><span>hồi</span></div></div>
                   <div class="row"><div class="tab1">Vào tiết:</div><div class="tab2"><input id="sohoi_vaotiet" type="number" value="5"><span>hồi</span></div></div>
@@ -121,7 +143,7 @@
       </div>
 
       <div class="button-container">
-        <input type="button" class="save-button" onclick="publishUpdate()" value="Lưu">
+        <input type="button" class="save-button" onclick="publishUpdate()" value="Lưu và gửi cập nhật">
         <input type="button" class="test-button" onclick="publishTestBell()" value="Thử Chuông">
       </div>
 
@@ -140,7 +162,9 @@
     const brokerUrl="wss://366af3ec40124749863257ecd2c62b3e.s1.eu.hivemq.cloud:8884/mqtt";
     const options={username:"ngoctuyka",password:"Tu12345678@",clientId:"WebAppClient_"+parseInt(1e3*Math.random()),reconnectPeriod:2e3};
     
+    const ONLINE_STATUS_TOPIC = "esp32/bell/status/online";
     const DATA_STATUS_TOPIC = "esp32/bell/data/status";
+    const GET_DATA_TOPIC = "esp32/bell/data/get";
     const SET_DATA_TOPIC = "esp32/bell/data/set";
     const CONTROL_TOPIC = "esp32/bell/control";
 
@@ -148,20 +172,40 @@
         console.log("Đang kết nối đến MQTT broker...");
         const statusDiv = document.getElementById("status");
         statusDiv.textContent="Đang kết nối...";
-        statusDiv.className="status-bar status-connecting"; // Trạng thái đang kết nối
+        statusDiv.className="status-bar status-connecting";
         
         client=mqtt.connect(brokerUrl,options);
         
         client.on("connect",()=>{
             console.log("Đã kết nối thành công đến MQTT broker!");
-            statusDiv.textContent = "Đã kết nối";
-            statusDiv.className = "status-bar status-connected"; // Trạng thái đã kết nối
-            client.subscribe(DATA_STATUS_TOPIC, {qos:1});
+            
+            client.subscribe([DATA_STATUS_TOPIC, ONLINE_STATUS_TOPIC], {qos:1}, (err)=>{
+                if(err) {
+                    console.error("Lỗi khi đăng ký topic:", err);
+                } else {
+                    console.log("Đăng ký nhận các topic thành công!");
+                    client.publish(GET_DATA_TOPIC, '1', { qos: 1 });
+                }
+            });
         });
         
         client.on("message",(topic, payload)=>{
             const payloadString = payload.toString();
             console.log(`Nhận được tin nhắn từ topic: ${topic}`);
+            
+            if (topic === ONLINE_STATUS_TOPIC) {
+                if (payloadString === 'online') {
+                    statusDiv.textContent = "Thiết bị đang hoạt động";
+                    statusDiv.className = "status-bar status-connected";
+                    document.getElementById('clock-wrapper').style.display = 'block';
+                } else {
+                    statusDiv.textContent = "Thiết bị ngoại tuyến";
+                    statusDiv.className = "status-bar status-disconnected";
+                    document.getElementById('clock-wrapper').style.display = 'none';
+                    serverTime = null;
+                }
+            }
+            
             if (topic === DATA_STATUS_TOPIC && payloadString) {
                 _load(payloadString);
             }
@@ -171,8 +215,8 @@
         
         client.on("close",()=>{
             console.log("Mất kết nối MQTT. Đang thử kết nối lại...");
-            statusDiv.textContent = "Mất kết nối";
-            statusDiv.className = "status-bar status-disconnected"; // Trạng thái mất kết nối
+            statusDiv.textContent = "Mất kết nối máy chủ";
+            statusDiv.className = "status-bar status-disconnected";
             document.getElementById('clock-wrapper').style.display = 'none';
             serverTime = null;
         });
@@ -180,7 +224,6 @@
 
     function _load(e){try{const t=JSON.parse(e);t.schedule&&t.epoch&&(setTime(t.epoch),populateForm(t))}catch(t){console.error("Lỗi parse JSON từ MQTT:",t)}}function publishUpdate(){if(!client||!client.connected)return void alert("Chưa kết nối đến máy chủ. Vui lòng đợi hoặc kiểm tra lại kết nối mạng.");try{const e=gatherDataFromForm(),t=JSON.stringify({schedule:e});client.publish(SET_DATA_TOPIC,t,{qos:1,retain:!0}),alert("Đã gửi lệnh cập nhật thành công!")}catch(e){alert("Lỗi khi thu thập dữ liệu từ form: "+e.message),console.error(e)}}function publishTestBell(){client&&client.connected?client.publish(CONTROL_TOPIC,"TEST_BELL",{qos:1}):alert("Chưa kết nối đến máy chủ. Vui lòng đợi hoặc kiểm tra lại kết nối mạng.")}function logout(){sessionStorage.removeItem("isLoggedIn"),window.location.href="login.html"}function setTime(e){isNaN(e)||e<1e5?(console.log("Invalid epoch received, clock not set:",e),serverTime=null):(serverTime=new Date(1e3*e),document.getElementById("date").innerHTML=serverTime.toLocaleDateString("vi-VN",{weekday:"long",year:"numeric",month:"long",day:"numeric",timeZone:"Asia/Ho_Chi_Minh"}),updateLocalClock())}function updateLocalClock(){serverTime&&(serverTime.setSeconds(serverTime.getSeconds()+1),document.getElementById("clock").innerHTML=serverTime.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",second:"2-digit",timeZone:"Asia/Ho_Chi_Minh",hour12:!1}))}
     
-    // HÀM createDayContent ĐÃ ĐƯỢC CẬP NHẬT
     const createDayContent = (dayId, dayName, session) => {
         const hasChaoCo = (dayId === 't2_sang');
         const hasChuNhiem = (session === 'sang' && ['t3_sang', 't4_sang', 't5_sang', 't6_sang'].includes(dayId));
@@ -200,7 +243,6 @@
           <div class="row"><div class="tab1">TG Ra chơi:</div><div class="tab2"><input id="rachoi_${dayId}" type="number" value="5"><span>phút</span></div></div>
           <div class="row"><div class="tab1">TG Dự vào:</div><div class="tab2"><input id="duvaotiet_${dayId}" type="number" value="3"><span>phút</span></div></div>
           <div class="row"><div class="tab1">Số tiết học:</div><div class="tab2"><input id="sotiet_${dayId}" type="number" value="5"><span>tiết</span></div></div>
-          
           <details style="background-color: #2a2a2a;">
               <summary>Xem chi tiết lịch</summary>
               <div class="details-container" id="details-${dayId}"></div>
