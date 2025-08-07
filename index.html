@@ -42,20 +42,19 @@
     }
     h3 {
         margin-top: 25px;
-        margin-bottom: 15px; /* Giảm margin bottom */
+        margin-bottom: 15px; 
         text-align: center;
         font-size: 1.1em;
         font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 1px;
-        /* === THAY ĐỔI: Thêm khung nền cho tiêu đề === */
         padding: 8px 15px;
         background-color: #2c3e50;
         border-radius: 6px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         margin-left: 15px;
         margin-right: 15px;
-        border-left: 4px solid; /* Thêm viền màu để nhấn mạnh */
+        border-left: 4px solid; 
     }
     #header-sang { 
         color: #2ecc71; 
@@ -171,7 +170,12 @@
     summary {
         font-weight: bold; padding: 12px 15px; cursor: pointer; outline: none; color: #f1c40f;
         transition: background-color 0.2s;
+        list-style: none;
     }
+    summary::-webkit-details-marker, summary::marker {
+        display: none;
+    }
+
     details[open] > summary { background-color: #405569; }
     .details-content { padding: 10px 15px 15px 15px; border-top: 1px solid #4a627a; }
     
@@ -395,7 +399,40 @@
     
     function gatherDataFromForm(){const e={sohoi:{},lich:{sang:{},chieu:{}}};return["batdau","vaotiet","rachoi","duvao"].forEach(t=>{e.sohoi[t]=parseInt(document.getElementById(`sohoi_${t}`).value)||0}),["sang","chieu"].forEach(t=>{days.forEach(o=>{const n=e.lich[t][o.id]={};n.enabled=document.getElementById(`enable_${o.id}_${t}`).checked,n.gio=document.getElementById(`gio_${o.id}_${t}`).value,n.tiethoc=parseInt(document.getElementById(`tiethoc_${o.id}_${t}`).value)||0,n.rachoi=parseInt(document.getElementById(`rachoi_${o.id}_${t}`).value)||0,n.duvaotiet=parseInt(document.getElementById(`duvaotiet_${o.id}_${t}`).value)||0,n.sotiet=parseInt(document.getElementById(`sotiet_${o.id}_${t}`).value)||0;const a=document.getElementById(`chaoco_${o.id}_${t}`);a&&(n.chaoco=parseInt(a.value)||0);const l=document.getElementById(`chunhiem_${o.id}_${t}`);l&&(n.chunhiem=parseInt(l.value)||0)})}),e}
     
-    function openDay(e,t,o){let n;const a=document.getElementsByClassName("tabcontent");for(n=0;n<a.length;n++)a[n].style.display="none";const l=document.getElementsByClassName("tablinks-sang");for(n=0;n<l.length;n++)l[n].className=l[n].className.replace(" active","");const c=document.getElementsByClassName("tablinks-chieu");for(n=0;n<c.length;n++)c[n].className=c[n].className.replace(" active","");document.getElementById(t).style.display="block",e.currentTarget.className+=" active"}function timeToMinute(e){if(!e)return 0;const[t,o]=e.split(":").map(Number);return 60*t+o}function minuteToTime(e){const t=Math.floor(e/60).toString().padStart(2,"0"),o=(e%60).toString().padStart(2,"0");return`${t}:${o}`}
+    // === THAY ĐỔI: Chức năng Đóng/Mở cho các tab ngày ===
+    function openDay(e, t, o) {
+        const clickedButton = e.currentTarget;
+        const tabContent = document.getElementById(t);
+
+        // Kiểm tra nếu nút được bấm đã ở trạng thái active
+        if (clickedButton.classList.contains('active')) {
+            // Nếu có, thì ẩn nội dung và bỏ trạng thái active (đóng tab lại)
+            tabContent.style.display = 'none';
+            clickedButton.classList.remove('active');
+            return; // Dừng hàm tại đây
+        }
+
+        // Nếu không, thực hiện logic như cũ: đóng các tab khác và mở tab này
+        let i;
+        const allTabContent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < allTabContent.length; i++) {
+            allTabContent[i].style.display = "none";
+        }
+
+        const sangLinks = document.getElementsByClassName("tablinks-sang");
+        for (i = 0; i < sangLinks.length; i++) {
+            sangLinks[i].className = sangLinks[i].className.replace(" active", "");
+        }
+        const chieuLinks = document.getElementsByClassName("tablinks-chieu");
+        for (i = 0; i < chieuLinks.length; i++) {
+            chieuLinks[i].className = chieuLinks[i].className.replace(" active", "");
+        }
+
+        tabContent.style.display = "block";
+        clickedButton.className += " active";
+    }
+
+    function timeToMinute(e){if(!e)return 0;const[t,o]=e.split(":").map(Number);return 60*t+o}function minuteToTime(e){const t=Math.floor(e/60).toString().padStart(2,"0"),o=(e%60).toString().padStart(2,"0");return`${t}:${o}`}
     
     function calculateSchedule(e){const t=e=>parseInt(document.getElementById(e)?.value)||0,o=e=>timeToMinute(document.getElementById(e).value),n=o(`gio_${e}`),a=t(`tiethoc_${e}`),l=t(`rachoi_${e}`),c=t(`duvaotiet_${e}`),s=t(`sotiet_${e}`),i=t(`chaoco_${e}`),d=t(`chunhiem_${e}`);let r=[],u=n;if(i>0)r.push({time:u,description:"Dự vào"}),u+=c,r.push({time:u,description:"Chào cờ"}),u+=i,r.push({time:u,description:"Vào tiết 1"});else if(d>0)r.push({time:u,description:"Bắt đầu SH"}),c>0&&r.push({time:u+d,description:"Dự vào tiết 1"}),u=u+d+c,r.push({time:u,description:"Vào tiết 1"});else r.push({time:u,description:"Vào tiết 1"});for(let e=1;e<=s;e++){let t=u+a;e<s?(l>0&&r.push({time:t,description:`Ra chơi tiết ${e}`}),u=(t+=l)+c,c>0&&r.push({time:t,description:`Dự vào tiết ${e+1}`}),r.push({time:u,description:`Vào tiết ${e+1}`}))  :l>0&&r.push({time:t,description:"Ra về"})}const m=Array.from(new Map(r.map(e=>[e.time,e])).values());return m.map(e=>({...e,time:minuteToTime(e.time)})).sort((e,t)=>timeToMinute(e.time)-timeToMinute(t.time))}
 
@@ -462,8 +499,6 @@
     window.onload = function() { 
         connectToMqtt();
         setInterval(updateLocalClock, 1000);
-        // === THAY ĐỔI: Bỏ đi việc tự động click vào tab buổi chiều ===
-        document.querySelector(".tablinks-sang").click();
     };
   </script>
 </body>
