@@ -37,13 +37,13 @@
 
     /* --- TIÊU ĐỀ & MÀU SẮC NỔI BẬT --- */
     h2 {
-        font-size: 2em;
+        font-size: 1.8em; /* THAY ĐỔI: Giảm kích thước */
         margin-top: 20px;
         margin-bottom: 10px;
         text-align: center;
         color: #f39c12;
         text-shadow: 0 4px 12px rgba(243, 156, 18, 0.18), 0 2px 4px rgba(0,0,0,0.08);
-        letter-spacing: 1.5px;
+        letter-spacing: 1.2px; /* THAY ĐỔI: Giảm khoảng cách */
         font-weight: 800;
     }
     h3 {
@@ -63,7 +63,6 @@
         border-right: 7px solid;
         position: relative;
         z-index: 2;
-        /* THAY ĐỔI: Chữ và viền sáng hơn */
         color: #00e6ff !important;
         text-shadow: 0 0 12px #00e6ff, 0 2px 8px #000, 0 0 24px #fff;
         box-shadow: 0 4px 24px 0 #00000044, 0 2px 8px rgba(0,0,0,0.08),
@@ -120,13 +119,13 @@
     
     /* --- THANH TRẠNG THÁI & ĐỒNG HỒ --- */
     .status-bar { 
-        padding: 10px 18px;
+        padding: 8px 15px; /* Giảm padding */
         margin: 0 15px 14px 15px; 
         text-align: center; 
         font-weight: bold; 
         border-radius: 8px; 
         transition: all 0.5s;
-        font-size: 1em;
+        font-size: 0.8em; /* THAY ĐỔI: Thu nhỏ chữ */
         text-transform: uppercase; letter-spacing: 0.7px; box-shadow: 0 2px 8px rgba(52, 152, 219, 0.10);
         color: #ecf0f1;
     }
@@ -134,9 +133,17 @@
     .status-disconnected { background: linear-gradient(90deg, #ff5858 0%, #f09819 100%); color: #fff; }
     .status-connecting { background: linear-gradient(90deg, #7f8c8d 0%, #b2bec3 100%); color: #222; }
     .clock-container { text-align: center; margin: 22px 15px; background: linear-gradient(120deg, #232526 60%, #414345 100%); border: 2px solid #f1c40f; border-radius: 14px; padding: 18px 10px; box-shadow: 0 2px 12px rgba(241, 196, 15, 0.10), 0 2px 5px rgba(0,0,0,0.08); }
+    /* THAY ĐỔI: Thêm style cho đồng hồ */
+    .clock {
+        font-size: 3.2em;
+        color: #f1c40f;
+        text-shadow: 0 0 10px #f1c40f88;
+        letter-spacing: 2px;
+        font-family: 'Courier New', Courier, monospace;
+    }
     .date-display { font-size: 1.08em; color: #ecf0f1; margin-top: 7px; font-weight: 500; }
 
-    /* === KHU VỰC NÚT ĐIỀU KHIỂN === */
+    /* --- KHU VỰC NÚT ĐIỀU KHIỂN --- */
     .button-section {
         display: flex;
         flex-direction: column;
@@ -153,7 +160,7 @@
         border: none;
         border-radius: 12px;
         font-size: 1.08em;
-        font-weight: 700; /* THAY ĐỔI: Giảm độ đậm để sửa lỗi phông */
+        font-weight: 700;
         letter-spacing: 1.5px;
         transition: box-shadow 0.18s, transform 0.13s, filter 0.13s;
         cursor: pointer;
@@ -167,7 +174,6 @@
         filter: brightness(0.97);
         box-shadow: 0 2px 8px 0 #0004;
     }
-
     .save-button {
         width: 100%;
         background: linear-gradient(90deg, #232526 60%, #414345 100%);
@@ -182,7 +188,6 @@
         filter: brightness(1.12);
         box-shadow: 0 10px 32px #00e6ff99, 0 2px 12px #fff4;
     }
-    
     .button-row {
         display: flex;
         gap: 18px;
@@ -190,7 +195,6 @@
     .button-row .modern-btn {
         flex-grow: 1;
     }
-    
     .test-button {
         background: linear-gradient(90deg, #232526 60%, #414345 100%);
         color: #f1c40f;
@@ -214,6 +218,21 @@
     .logout-button:hover {
         filter: brightness(1.08);
         box-shadow: 0 10px 32px #e74c3c99, 0 2px 12px #fff4;
+    }
+    /* THAY ĐỔI: Đồng bộ nút Cập nhật bảng chi tiết */
+    .preview-button {
+        width: 100%;
+        margin-top: 16px;
+        background: linear-gradient(90deg, #232526 60%, #414345 100%);
+        color: #2ecc71;
+        border-left: 5px solid #2ecc71;
+        border-right: 5px solid #2ecc71;
+        text-shadow: 0 0 12px #2ecc71, 0 2px 8px #000, 0 0 24px #fff;
+        box-shadow: 0 4px 18px 0 #2ecc7133, 0 2px 8px #fff2;
+    }
+    .preview-button:hover {
+        filter: brightness(1.08);
+        box-shadow: 0 10px 32px #2ecc7199, 0 2px 12px #fff4;
     }
 
     /* --- TAB NGÀY & NỘI DUNG TAB --- */
@@ -260,7 +279,6 @@
     }
     summary::-webkit-details-marker, summary::marker { display: none; }
     
-    /* THAY ĐỔI: Đồng bộ giao diện "Số hồi chuông" với các nút */
     summary#header-sohoi {
         display: flex;
         flex-direction: column;
@@ -280,7 +298,6 @@
         font-weight: 700;
         letter-spacing: 1.5px;
     }
-    /* Bỏ hiệu ứng đổi màu khi mở */
     details[open] > summary#header-sohoi {
         background: linear-gradient(90deg, #232526 60%, #414345 100%);
         color: #f1c40f;
@@ -310,16 +327,30 @@
     .details-container tbody tr:nth-child(odd) { background: #232526; color: #ecf0f1; }
     .details-container tbody tr:nth-child(even) { background: #414345; color: #ecf0f1; }
 
-    /* --- NÚT SAO CHÉP ĐẾN --- */
+    /* THAY ĐỔI: Đồng bộ nút Sao chép đến */
     .copy-button {
-        margin-left: auto; padding: 6px 14px; font-size: 0.95em; color: #fff; border: none;
-        border-radius: 6px; cursor: pointer; transition: background 0.18s, box-shadow 0.18s;
-        font-weight: 600; box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
+        margin-left: auto;
+        padding: 8px 14px;
+        font-size: 0.85em;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.18s;
+        font-weight: 700;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        text-shadow: 0 1px 2px #00000044;
     }
-    .copy-button.sang { background: linear-gradient(90deg, #16a085 0%, #43e97b 100%); }
-    .copy-button.sang:hover { background: #16a085; }
-    .copy-button.chieu { background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%); }
-    .copy-button.chieu:hover { background: #2980b9; }
+    .copy-button:active {
+        transform: scale(0.96);
+        filter: brightness(0.95);
+    }
+    .copy-button.sang {
+        background: linear-gradient(90deg, #16a085 0%, #43e97b 100%);
+    }
+    .copy-button.chieu {
+        background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%);
+    }
     .activation-row .tab2 { justify-content: flex-start; }
 
     .divider-yellow {
@@ -485,6 +516,7 @@
             copyButton = `<button class="copy-button sang" onclick="copyMorningSchedule('${dayId}')">Sao chép đến</button>`;
         }
 
+        // THAY ĐỔI: Chuyển nút Cập nhật từ <input> thành <button> để đồng bộ
         return `
         <div id="${dayId}" class="tabcontent">
           <h3>Cài đặt Lịch ${dayName} (Buổi ${session === 'sang' ? 'Sáng' : 'Chiều'})</h3>
@@ -505,7 +537,7 @@
               <summary>Xem chi tiết lịch</summary>
               <div class="details-container" id="details-${dayId}"></div>
           </details>
-          <input type="button" class="preview-button" onclick="updatePreviewTable('${dayId}')" value="Cập nhật bảng chi tiết">
+          <button class="modern-btn preview-button" onclick="updatePreviewTable('${dayId}')">Cập nhật bảng chi tiết</button>
         </div>`;
     };
 
