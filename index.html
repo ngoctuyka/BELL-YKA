@@ -223,7 +223,6 @@
         border-bottom-color: #f1c40f;
         z-index: 2;
     }
-    
     .tabcontent { 
         display: none; padding: 18px 10px 10px 10px; background: #232526;
         border-radius: 0 0 12px 12px; box-shadow: 0 2px 8px rgba(52, 152, 219, 0.05);
@@ -368,6 +367,31 @@
     .copy-button.chieu {
         background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%);
     }
+    /* THAY ĐỔI: Phục hồi giao diện Cài đặt số hồi chuông */
+    summary#header-sohoi {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 54px;
+        border-radius: 12px;
+        background: linear-gradient(90deg, #232526 60%, #414345 100%);
+        color: #f1c40f;
+        border-left: 5px solid #f1c40f;
+        border-right: 5px solid #f1c40f;
+        text-shadow: 0 0 12px #f1c40f, 0 2px 8px #000, 0 0 24px #fff;
+        box-shadow: 0 4px 18px 0 #f1c40f33, 0 2px 8px #fff2;
+    }
+    summary#header-sohoi div:first-child {
+        font-size: 1.08em;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+    }
+    details[open] > summary#header-sohoi {
+        /* Bỏ hiệu ứng đổi màu */
+        background: linear-gradient(90deg, #232526 60%, #414345 100%);
+        color: #f1c40f;
+    }
   </style>
 </head>
 <body>
@@ -417,10 +441,36 @@
                   <span style="font-size: 0.8em; font-weight: normal; color: #ccc; margin-top: 2px;">(SÁNG - CHIỀU)</span>
               </summary>
               <div class="details-content">
-                  <div class="row"><div class="tab1">Bắt đầu buổi học:</div><div class="tab2"><input id="sohoi_batdau" type="number" value="6"><span>hồi</span></div></div>
-                  <div class="row"><div class="tab1">Vào tiết:</div><div class="tab2"><input id="sohoi_vaotiet" type="number" value="5"><span>hồi</span></div></div>
-                  <div class="row"><div class="tab1">Ra chơi:</div><div class="tab2"><input id="sohoi_rachoi" type="number" value="3"><span>hồi</span></div></div>
-                  <div class="row"><div class="tab1">Dự vào lớp:</div><div class="tab2"><input id="sohoi_duvao" type="number" value="2"><span>hồi</span></div></div>
+                  <div class="settings-grid">
+                      <div class="setting-item">
+                          <div class="setting-item-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13.586V10c0-3.217-2.185-5.927-5-6.758V2h-4v1.242C7.185 4.073 5 6.783 5 10v3.586l-1.707 1.707A.996.996 0 0 0 3 16v2a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-2a.996.996 0 0 0-.293-.707L19 13.586zM19 17H5v-.586l1.707-1.707A.996.996 0 0 0 7 14v-4c0-2.757 2.243-5 5-5s5 2.243 5 5v4c0 .266.105.52.293.707L19 16.414V17zM12 22a2.98 2.98 0 0 0 2.818-2H9.182A2.98 2.98 0 0 0 12 22z"></path></svg></div>
+                          <div class="input-wrapper">
+                              <label for="sohoi_batdau">Bắt đầu buổi học</label>
+                              <div class="unit-input"><input id="sohoi_batdau" type="number" value="6"><span>hồi</span></div>
+                          </div>
+                      </div>
+                      <div class="setting-item">
+                          <div class="setting-item-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13 16.438V7.562a1 1 0 0 0-1.555-.832L8 9.562v4.876l3.445 2.832A1 1 0 0 0 13 16.438zM12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path></svg></div>
+                          <div class="input-wrapper">
+                              <label for="sohoi_vaotiet">Vào tiết</label>
+                              <div class="unit-input"><input id="sohoi_vaotiet" type="number" value="5"><span>hồi</span></div>
+                          </div>
+                      </div>
+                      <div class="setting-item">
+                          <div class="setting-item-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18 5h-2V2H8v3H6c-1.654 0-3 1.346-3 3v6c0 1.654 1.346 3 3 3h1v1c0 .552.447 1 1 1h6c.553 0 1-.448 1-1v-1h1c1.654 0 3-1.346 3-3V8c0-1.654-1.346-3-3-3zm1 9c0 .552-.447 1-1 1H6c-.553 0-1-.448-1-1V8c0-.552.447-1 1-1h12c.553 0 1 .448 1 1v6z"></path></svg></div>
+                          <div class="input-wrapper">
+                              <label for="sohoi_rachoi">Ra chơi</label>
+                              <div class="unit-input"><input id="sohoi_rachoi" type="number" value="3"><span>hồi</span></div>
+                          </div>
+                      </div>
+                      <div class="setting-item">
+                          <div class="setting-item-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M14 12V8h-4v4H8l4 4 4-4h-2z"></path></svg></div>
+                          <div class="input-wrapper">
+                              <label for="sohoi_duvao">Dự vào lớp</label>
+                              <div class="unit-input"><input id="sohoi_duvao" type="number" value="2"><span>hồi</span></div>
+                          </div>
+                      </div>
+                  </div>
               </div>
           </details>
       </div>
@@ -526,7 +576,7 @@
         
         let specialPeriod = '';
         if (hasChaoCo) {
-            specialPeriod = `<div class="setting-item">
+            specialPeriod = `<div class="setting-item full-width">
                                 ${iconCalendar}
                                 <div class="input-wrapper">
                                     <label for="chaoco_${dayId}">TG Chào cờ</label>
@@ -534,7 +584,7 @@
                                 </div>
                              </div>`;
         } else if (hasChuNhiem) {
-            specialPeriod = `<div class="setting-item">
+            specialPeriod = `<div class="setting-item full-width">
                                 ${iconCalendar}
                                 <div class="input-wrapper">
                                     <label for="chunhiem_${dayId}">TG Chủ nhiệm</label>
@@ -565,7 +615,7 @@
           <hr style="margin: 15px;">
           
           <div class="settings-grid">
-              <div class="setting-item">
+              <div class="setting-item full-width">
                   ${iconClock}
                   <div class="input-wrapper">
                       <label for="gio_${dayId}">Giờ vào học</label>
@@ -614,21 +664,13 @@
     };
 
     const containerSang=document.getElementById("tab-container-sang"),containerChieu=document.getElementById("tab-container-chieu"),days=[{id:"t2",name:"Thứ 2"},{id:"t3",name:"Thứ 3"},{id:"t4",name:"Thứ 4"},{id:"t5",name:"Thứ 5"},{id:"t6",name:"Thứ 6"},{id:"t7",name:"Thứ 7"},{id:"cn",name:"Chủ Nhật"}];days.forEach(e=>{containerSang.innerHTML+=createDayContent(`${e.id}_sang`,e.name,"sang"),containerChieu.innerHTML+=createDayContent(`${e.id}_chieu`,e.name,"chieu")});
-    
     function populateForm(e){const t=e.schedule?e.schedule:e;t&&t.sohoi&&t.lich?(console.log("Bat dau cap nhat form voi du lieu:",t),t.sohoi&&["batdau","vaotiet","rachoi","duvao"].forEach(e=>{const o=document.getElementById(`sohoi_${e}`);o&&(o.value=t.sohoi[e]||"")}),["sang","chieu"].forEach(e=>{days.forEach(o=>{const n=t.lich?.[e]?.[o.id];if(n){document.getElementById(`enable_${o.id}_${e}`).checked=n.enabled,document.getElementById(`gio_${o.id}_${e}`).value=n.gio||"",document.getElementById(`tiethoc_${o.id}_${e}`).value=n.tiethoc||"",document.getElementById(`rachoi_${o.id}_${e}`).value=n.rachoi||"",document.getElementById(`duvaotiet_${o.id}_${e}`).value=n.duvaotiet||"",document.getElementById(`sotiet_${o.id}_${e}`).value=n.sotiet||"";const t=document.getElementById(`chaoco_${o.id}_${e}`);t&&(t.value=n.chaoco||0);const a=document.getElementById(`chunhiem_${o.id}_${e}`);a&&(a.value=n.chunhiem||0),updatePreviewTable(`${o.id}_${e}`)}})})):console.error("Dữ liệu lịch học nhận được không hợp lệ hoặc không đầy đủ:",e)}
-    
     function gatherDataFromForm(){const e={sohoi:{},lich:{sang:{},chieu:{}}};return["batdau","vaotiet","rachoi","duvao"].forEach(t=>{e.sohoi[t]=parseInt(document.getElementById(`sohoi_${t}`).value)||0}),["sang","chieu"].forEach(t=>{days.forEach(o=>{const n=e.lich[t][o.id]={};n.enabled=document.getElementById(`enable_${o.id}_${t}`).checked,n.gio=document.getElementById(`gio_${o.id}_${t}`).value,n.tiethoc=parseInt(document.getElementById(`tiethoc_${o.id}_${t}`).value)||0,n.rachoi=parseInt(document.getElementById(`rachoi_${o.id}_${t}`).value)||0,n.duvaotiet=parseInt(document.getElementById(`duvaotiet_${o.id}_${t}`).value)||0,n.sotiet=parseInt(document.getElementById(`sotiet_${o.id}_${t}`).value)||0;const a=document.getElementById(`chaoco_${o.id}_${t}`);a&&(n.chaoco=parseInt(a.value)||0);const l=document.getElementById(`chunhiem_${o.id}_${t}`);l&&(n.chunhiem=parseInt(l.value)||0)})}),e}
-    
     function openDay(e, t, o) { const clickedButton = e.currentTarget; const tabContent = document.getElementById(t); if (clickedButton.classList.contains('active')) { tabContent.style.display = 'none'; clickedButton.classList.remove('active'); return; } let i; const allTabContent = document.getElementsByClassName("tabcontent"); for (i = 0; i < allTabContent.length; i++) { allTabContent[i].style.display = "none"; } const sangLinks = document.getElementsByClassName("tablinks-sang"); for (i = 0; i < sangLinks.length; i++) { sangLinks[i].className = sangLinks[i].className.replace(" active", ""); } const chieuLinks = document.getElementsByClassName("tablinks-chieu"); for (i = 0; i < chieuLinks.length; i++) { chieuLinks[i].className = chieuLinks[i].className.replace(" active", ""); } tabContent.style.display = "block"; clickedButton.className += " active"; }
-
     function timeToMinute(e){if(!e)return 0;const[t,o]=e.split(":").map(Number);return 60*t+o}function minuteToTime(e){const t=Math.floor(e/60).toString().padStart(2,"0"),o=(e%60).toString().padStart(2,"0");return`${t}:${o}`}
-    
     function calculateSchedule(e){const t=e=>parseInt(document.getElementById(e)?.value)||0,o=e=>timeToMinute(document.getElementById(e).value),n=o(`gio_${e}`),a=t(`tiethoc_${e}`),l=t(`rachoi_${e}`),c=t(`duvaotiet_${e}`),s=t(`sotiet_${e}`),i=t(`chaoco_${e}`),d=t(`chunhiem_${e}`);let r=[],u=n;if(i>0)r.push({time:u,description:"Dự vào"}),u+=c,r.push({time:u,description:"Chào cờ"}),u+=i,r.push({time:u,description:"Vào tiết 1"});else if(d>0)r.push({time:u,description:"Bắt đầu SH"}),c>0&&r.push({time:u+d,description:"Dự vào tiết 1"}),u=u+d+c,r.push({time:u,description:"Vào tiết 1"});else r.push({time:u,description:"Vào tiết 1"});for(let e=1;e<=s;e++){let t=u+a;e<s?(l>0&&r.push({time:t,description:`Ra chơi tiết ${e}`}),u=(t+=l)+c,c>0&&r.push({time:t,description:`Dự vào tiết ${e+1}`}),r.push({time:u,description:`Vào tiết ${e+1}`}))  :l>0&&r.push({time:t,description:"Ra về"})}const m=Array.from(new Map(r.map(e=>[e.time,e])).values());return m.map(e=>({...e,time:minuteToTime(e.time)})).sort((e,t)=>timeToMinute(e.time)-timeToMinute(t.time))}
-
     function updatePreviewTable(e){const t=document.getElementById(`enable_${e}`).checked,o=document.getElementById("details-"+e);if(!o)return;if(!t)return void(o.innerHTML="<p style='text-align:center; padding: 10px;'>Lịch này đang tắt.</p>");const n=calculateSchedule(e);let a="<table><thead><tr><th>STT</th><th>Thời gian</th><th>Nội dung</th></tr></thead><tbody>";n.forEach((e,t)=>{a+=`<tr><td>${t+1}</td><td>${e.time}</td><td>${e.description}</td></tr>`}),a+="</tbody></table>",o.innerHTML=a}
-    
     function copyAfternoonSchedule(sourceDayId) { const sourceDayName = document.querySelector(`.tablinks-chieu[onclick*="'${sourceDayId}'"]`).innerText; if (!confirm(`Bạn có chắc muốn sao chép lịch của ${sourceDayName} (chiều) đến tất cả các ngày còn lại của buổi chiều không?`)) return; const sourceData = { enabled: document.getElementById(`enable_${sourceDayId}`).checked, gio: document.getElementById(`gio_${sourceDayId}`).value, tiethoc: document.getElementById(`tiethoc_${sourceDayId}`).value, rachoi: document.getElementById(`rachoi_${sourceDayId}`).value, duvaotiet: document.getElementById(`duvaotiet_${sourceDayId}`).value, sotiet: document.getElementById(`sotiet_${sourceDayId}`).value }; const sourceBaseId = sourceDayId.replace('_chieu', ''); days.filter(day => day.id !== sourceBaseId).forEach(day => { const targetDayId = `${day.id}_chieu`; document.getElementById(`enable_${targetDayId}`).checked = sourceData.enabled; document.getElementById(`gio_${targetDayId}`).value = sourceData.gio; document.getElementById(`tiethoc_${targetDayId}`).value = sourceData.tiethoc; document.getElementById(`rachoi_${targetDayId}`).value = sourceData.rachoi; document.getElementById(`duvaotiet_${targetDayId}`).value = sourceData.duvaotiet; document.getElementById(`sotiet_${targetDayId}`).value = sourceData.sotiet; updatePreviewTable(targetDayId); }); alert('Sao chép thành công! \n\nHãy nhấn nút "Lưu và gửi cập nhật" để áp dụng các thay đổi này.'); }
-    
     function copyMorningSchedule(sourceDayId) { const sourceDayName = document.querySelector(`.tablinks-sang[onclick*="'${sourceDayId}'"]`).innerText; if (!confirm(`Bạn có chắc muốn sao chép lịch của ${sourceDayName} (sáng) đến các ngày còn lại (T3-T7) không?`)) return; const sourceData = { enabled: document.getElementById(`enable_${sourceDayId}`).checked, gio: document.getElementById(`gio_${sourceDayId}`).value, chunhiem: document.getElementById(`chunhiem_${sourceDayId}`).value, tiethoc: document.getElementById(`tiethoc_${sourceDayId}`).value, rachoi: document.getElementById(`rachoi_${sourceDayId}`).value, duvaotiet: document.getElementById(`duvaotiet_${sourceDayId}`).value, sotiet: document.getElementById(`sotiet_${sourceDayId}`).value }; const sourceBaseId = sourceDayId.replace('_sang', ''); const targetDayIds = ['t3', 't4', 't5', 't6', 't7'].filter(id => id !== sourceBaseId); targetDayIds.forEach(dayId => { const targetDayId = `${dayId}_sang`; document.getElementById(`enable_${targetDayId}`).checked = sourceData.enabled; document.getElementById(`gio_${targetDayId}`).value = sourceData.gio; document.getElementById(`chunhiem_${targetDayId}`).value = sourceData.chunhiem; document.getElementById(`tiethoc_${targetDayId}`).value = sourceData.tiethoc; document.getElementById(`rachoi_${targetDayId}`).value = sourceData.rachoi; document.getElementById(`duvaotiet_${targetDayId}`).value = sourceData.duvaotiet; document.getElementById(`sotiet_${targetDayId}`).value = sourceData.sotiet; updatePreviewTable(targetDayId); }); alert('Sao chép thành công! \n\nHãy nhấn nút "Lưu và gửi cập nhật" để áp dụng các thay đổi này.'); }
 
     window.onload = function() { 
