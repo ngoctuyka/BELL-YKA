@@ -36,7 +36,7 @@
 
     /* --- TIÊU ĐỀ & MÀU SẮC NỔI BẬT --- */
     h2 {
-        font-size: 1.7em; /* THAY ĐỔI: Giảm kích thước */
+        font-size: 1.7em;
         margin-top: 20px;
         margin-bottom: 10px;
         text-align: center;
@@ -82,40 +82,6 @@
     }
     hr { border: none; height: 2px; background: linear-gradient(90deg, #f1c40f 0%, #e0eafc 100%); margin: 28px 15px; border-radius: 2px; }
 
-    /* --- CÁC HÀNG CÀI ĐẶT CHUNG --- */
-    .row {
-        margin-bottom: 12px;
-        float: left;
-        width: 100%;
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        transition: background 0.2s;
-    }
-    .div1 { padding: 0 15px; float: left; margin-bottom: 14px; width: 100%; }
-    .tab1 { width: 150px; float: left; line-height: 26px; font-size: 1em; color: #ecf0f1; font-weight: 500; }
-    .tab2 { width: 160px; float: left; display: flex; align-items: center; justify-content: space-between; }
-    
-    input[type="number"], input[type="time"] {
-        width: 90px;
-        float: left;
-        margin-right: 10px;
-        background: #232526;
-        border: 1.5px solid #414345;
-        color: #f1c40f;
-        border-radius: 7px;
-        padding: 9px 8px;
-        font-size: 1em;
-        box-shadow: 0 1px 4px rgba(52, 152, 219, 0.07);
-        outline: none;
-        transition: border 0.2s, box-shadow 0.2s;
-    }
-    input[type="number"]:focus, input[type="time"]:focus {
-        border-color: #f1c40f;
-        box-shadow: 0 0 0 2px #f1c40f44;
-    }
-    input[type="checkbox"].enable-checkbox { width: 22px; height: 22px; flex-shrink: 0; accent-color: #16a085; }
-    
     /* --- THANH TRẠNG THÁI & ĐỒNG HỒ --- */
     .status-bar { 
         padding: 6px 15px;
@@ -257,6 +223,7 @@
         border-bottom-color: #f1c40f;
         z-index: 2;
     }
+    
     .tabcontent { 
         display: none; padding: 18px 10px 10px 10px; background: #232526;
         border-radius: 0 0 12px 12px; box-shadow: 0 2px 8px rgba(52, 152, 219, 0.05);
@@ -276,34 +243,7 @@
     }
     summary::-webkit-details-marker, summary::marker { display: none; }
     
-    /* THAY ĐỔI: Phục hồi giao diện Cài đặt số hồi chuông */
-    summary#header-sohoi {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 54px;
-        border-radius: 12px;
-        background: linear-gradient(90deg, #232526 60%, #414345 100%);
-        color: #f1c40f;
-        border-left: 5px solid #f1c40f;
-        border-right: 5px solid #f1c40f;
-        text-shadow: 0 0 12px #f1c40f, 0 2px 8px #000, 0 0 24px #fff;
-        box-shadow: 0 4px 18px 0 #f1c40f33, 0 2px 8px #fff2;
-    }
-    summary#header-sohoi div:first-child {
-        font-size: 1.08em;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-    }
-    details[open] > summary#header-sohoi {
-        background: linear-gradient(90deg, #232526 60%, #414345 100%);
-        color: #f1c40f;
-    }
     .details-content { padding: 12px 15px 16px 15px; border-top: 1.5px solid #414345; }
-    
-    #header-sohoi + .details-content .tab1 { width: 140px; }
-    #header-sohoi + .details-content .tab2 { width: 120px; }
     
     .tabcontent details summary {
         text-align: center;
@@ -324,54 +264,12 @@
     .details-container tbody tr:nth-child(odd) { background: #232526; color: #ecf0f1; }
     .details-container tbody tr:nth-child(even) { background: #414345; color: #ecf0f1; }
 
-    /* THAY ĐỔI: Căn chỉnh Kích hoạt & Sao chép */
-    .activation-copy-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        padding: 0 5px;
-        margin-bottom: 15px;
-    }
-    .activation-control {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .activation-control label {
-        font-weight: bold;
-        font-size: 1em;
-        cursor: pointer;
-    }
-    .copy-button {
-        padding: 8px 14px;
-        font-size: 0.85em;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.18s;
-        font-weight: 700;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        text-shadow: 0 1px 2px #00000044;
-    }
-    .copy-button:active {
-        transform: scale(0.96);
-        filter: brightness(0.95);
-    }
-    .copy-button.sang {
-        background: linear-gradient(90deg, #16a085 0%, #43e97b 100%);
-    }
-    .copy-button.chieu {
-        background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%);
-    }
-
     .divider-yellow {
         width: 90%; height: 3px; background: linear-gradient(90deg, #f1c40f 0%, #fff200 100%);
         border-radius: 2px; margin: 24px auto 18px auto; box-shadow: 0 2px 8px #f1c40f55;
     }
 
-    /* Giao diện lưới cho Cài đặt giờ (để lại cho tương lai) */
+    /* === GIAO DIỆN LƯỚI "THÔNG MINH" CHO CÀI ĐẶT === */
     .settings-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -429,6 +327,46 @@
     .setting-item input[type="time"] {
         width: 100%;
         padding: 9px;
+    }
+    .activation-copy-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 0 5px;
+        margin-bottom: 15px;
+    }
+    .activation-control {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .activation-control label {
+        font-weight: bold;
+        font-size: 1em;
+        cursor: pointer;
+    }
+    .copy-button {
+        padding: 8px 14px;
+        font-size: 0.85em;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.18s;
+        font-weight: 700;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        text-shadow: 0 1px 2px #00000044;
+    }
+    .copy-button:active {
+        transform: scale(0.96);
+        filter: brightness(0.95);
+    }
+    .copy-button.sang {
+        background: linear-gradient(90deg, #16a085 0%, #43e97b 100%);
+    }
+    .copy-button.chieu {
+        background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%);
     }
   </style>
 </head>
@@ -500,6 +438,7 @@
   </div>
 
   <script>
+    // === SỬA LỖI: PHỤC HỒI ĐẦY ĐỦ SCRIPT ===
     if("true"!==sessionStorage.getItem("isLoggedIn"))window.location.href="login.html";
     
     let client,serverTime=null;
@@ -514,8 +453,65 @@
     const CONTROL_TOPIC = "esp32/bell/control";
 
     function connectToMqtt(){
-        // ... (Script không đổi)
+        console.log("Đang kết nối đến MQTT broker...");
+        const statusDiv = document.getElementById("status");
+        statusDiv.textContent="Đang kết nối...";
+        statusDiv.className="status-bar status-connecting";
+        
+        client=mqtt.connect(brokerUrl,options);
+        
+        client.on("connect",()=>{
+            console.log("Đã kết nối thành công đến MQTT broker!");
+            
+            client.subscribe([DATA_STATUS_TOPIC, ONLINE_STATUS_TOPIC], {qos:1}, (err)=>{
+                if(err) {
+                    console.error("Lỗi khi đăng ký topic:", err);
+                } else {
+                    console.log("Đăng ký nhận các topic thành công!");
+                    client.publish(GET_DATA_TOPIC, '1', { qos: 1 });
+                }
+            });
+        });
+        
+        client.on("message",(topic, payload)=>{
+            const payloadString = payload.toString();
+            console.log(`Nhận được tin nhắn từ topic: ${topic}`);
+            
+            if (topic === ONLINE_STATUS_TOPIC) {
+                if (payloadString === 'online') {
+                    statusDiv.textContent = "Thiết bị đang hoạt động";
+                    statusDiv.className = "status-bar status-connected";
+                    document.getElementById('clock-wrapper').style.display = 'block';
+                } else {
+                    statusDiv.textContent = "Thiết bị ngoại tuyến";
+                    statusDiv.className = "status-bar status-disconnected";
+                    document.getElementById('clock-wrapper').style.display = 'none';
+                    serverTime = null;
+                }
+            }
+            
+            if (topic === DATA_STATUS_TOPIC && payloadString) {
+                _load(payloadString);
+            }
+        });
+        
+        client.on("error", e => console.error("Lỗi kết nối MQTT:", e));
+        
+        client.on("close",()=>{
+            console.log("Mất kết nối MQTT. Đang thử kết nối lại...");
+            statusDiv.textContent = "Mất kết nối máy chủ";
+            statusDiv.className = "status-bar status-disconnected";
+            document.getElementById('clock-wrapper').style.display = 'none';
+            serverTime = null;
+        });
     }
+
+    function _load(e){try{const t=JSON.parse(e);t.schedule&&t.epoch&&(setTime(t.epoch),populateForm(t))}catch(t){console.error("Lỗi parse JSON từ MQTT:",t)}}
+    function publishUpdate(){if(!client||!client.connected)return void alert("Chưa kết nối đến máy chủ. Vui lòng đợi hoặc kiểm tra lại kết nối mạng.");try{const e=gatherDataFromForm(),t=JSON.stringify({schedule:e});client.publish(SET_DATA_TOPIC,t,{qos:1,retain:!0}),alert("Đã gửi lệnh cập nhật thành công!")}catch(e){alert("Lỗi khi thu thập dữ liệu từ form: "+e.message),console.error(e)}}
+    function publishTestBell(){client&&client.connected?client.publish(CONTROL_TOPIC,"TEST_BELL",{qos:1}):alert("Chưa kết nối đến máy chủ. Vui lòng đợi hoặc kiểm tra lại kết nối mạng.")}
+    function logout(){sessionStorage.removeItem("isLoggedIn"),window.location.href="login.html"}
+    function setTime(e){isNaN(e)||e<1e5?(console.log("Invalid epoch received, clock not set:",e),serverTime=null):(serverTime=new Date(1e3*e),document.getElementById("date").innerHTML=serverTime.toLocaleDateString("vi-VN",{weekday:"long",year:"numeric",month:"long",day:"numeric",timeZone:"Asia/Ho_Chi_Minh"}),updateLocalClock())}
+    function updateLocalClock(){serverTime&&(serverTime.setSeconds(serverTime.getSeconds()+1),document.getElementById("clock").innerHTML=serverTime.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",second:"2-digit",timeZone:"Asia/Ho_Chi_Minh",hour12:!1}))}
     
     const createDayContent = (dayId, dayName, session) => {
         const hasChaoCo = (dayId === 't2_sang');
@@ -530,7 +526,7 @@
         
         let specialPeriod = '';
         if (hasChaoCo) {
-            specialPeriod = `<div class="setting-item full-width">
+            specialPeriod = `<div class="setting-item">
                                 ${iconCalendar}
                                 <div class="input-wrapper">
                                     <label for="chaoco_${dayId}">TG Chào cờ</label>
@@ -538,7 +534,7 @@
                                 </div>
                              </div>`;
         } else if (hasChuNhiem) {
-            specialPeriod = `<div class="setting-item full-width">
+            specialPeriod = `<div class="setting-item">
                                 ${iconCalendar}
                                 <div class="input-wrapper">
                                     <label for="chunhiem_${dayId}">TG Chủ nhiệm</label>
@@ -569,7 +565,7 @@
           <hr style="margin: 15px;">
           
           <div class="settings-grid">
-              <div class="setting-item full-width">
+              <div class="setting-item">
                   ${iconClock}
                   <div class="input-wrapper">
                       <label for="gio_${dayId}">Giờ vào học</label>
@@ -617,21 +613,27 @@
         </div>`;
     };
 
-    // Toàn bộ các hàm JavaScript còn lại không thay đổi
     const containerSang=document.getElementById("tab-container-sang"),containerChieu=document.getElementById("tab-container-chieu"),days=[{id:"t2",name:"Thứ 2"},{id:"t3",name:"Thứ 3"},{id:"t4",name:"Thứ 4"},{id:"t5",name:"Thứ 5"},{id:"t6",name:"Thứ 6"},{id:"t7",name:"Thứ 7"},{id:"cn",name:"Chủ Nhật"}];days.forEach(e=>{containerSang.innerHTML+=createDayContent(`${e.id}_sang`,e.name,"sang"),containerChieu.innerHTML+=createDayContent(`${e.id}_chieu`,e.name,"chieu")});
+    
     function populateForm(e){const t=e.schedule?e.schedule:e;t&&t.sohoi&&t.lich?(console.log("Bat dau cap nhat form voi du lieu:",t),t.sohoi&&["batdau","vaotiet","rachoi","duvao"].forEach(e=>{const o=document.getElementById(`sohoi_${e}`);o&&(o.value=t.sohoi[e]||"")}),["sang","chieu"].forEach(e=>{days.forEach(o=>{const n=t.lich?.[e]?.[o.id];if(n){document.getElementById(`enable_${o.id}_${e}`).checked=n.enabled,document.getElementById(`gio_${o.id}_${e}`).value=n.gio||"",document.getElementById(`tiethoc_${o.id}_${e}`).value=n.tiethoc||"",document.getElementById(`rachoi_${o.id}_${e}`).value=n.rachoi||"",document.getElementById(`duvaotiet_${o.id}_${e}`).value=n.duvaotiet||"",document.getElementById(`sotiet_${o.id}_${e}`).value=n.sotiet||"";const t=document.getElementById(`chaoco_${o.id}_${e}`);t&&(t.value=n.chaoco||0);const a=document.getElementById(`chunhiem_${o.id}_${e}`);a&&(a.value=n.chunhiem||0),updatePreviewTable(`${o.id}_${e}`)}})})):console.error("Dữ liệu lịch học nhận được không hợp lệ hoặc không đầy đủ:",e)}
+    
     function gatherDataFromForm(){const e={sohoi:{},lich:{sang:{},chieu:{}}};return["batdau","vaotiet","rachoi","duvao"].forEach(t=>{e.sohoi[t]=parseInt(document.getElementById(`sohoi_${t}`).value)||0}),["sang","chieu"].forEach(t=>{days.forEach(o=>{const n=e.lich[t][o.id]={};n.enabled=document.getElementById(`enable_${o.id}_${t}`).checked,n.gio=document.getElementById(`gio_${o.id}_${t}`).value,n.tiethoc=parseInt(document.getElementById(`tiethoc_${o.id}_${t}`).value)||0,n.rachoi=parseInt(document.getElementById(`rachoi_${o.id}_${t}`).value)||0,n.duvaotiet=parseInt(document.getElementById(`duvaotiet_${o.id}_${t}`).value)||0,n.sotiet=parseInt(document.getElementById(`sotiet_${o.id}_${t}`).value)||0;const a=document.getElementById(`chaoco_${o.id}_${t}`);a&&(n.chaoco=parseInt(a.value)||0);const l=document.getElementById(`chunhiem_${o.id}_${t}`);l&&(n.chunhiem=parseInt(l.value)||0)})}),e}
+    
     function openDay(e, t, o) { const clickedButton = e.currentTarget; const tabContent = document.getElementById(t); if (clickedButton.classList.contains('active')) { tabContent.style.display = 'none'; clickedButton.classList.remove('active'); return; } let i; const allTabContent = document.getElementsByClassName("tabcontent"); for (i = 0; i < allTabContent.length; i++) { allTabContent[i].style.display = "none"; } const sangLinks = document.getElementsByClassName("tablinks-sang"); for (i = 0; i < sangLinks.length; i++) { sangLinks[i].className = sangLinks[i].className.replace(" active", ""); } const chieuLinks = document.getElementsByClassName("tablinks-chieu"); for (i = 0; i < chieuLinks.length; i++) { chieuLinks[i].className = chieuLinks[i].className.replace(" active", ""); } tabContent.style.display = "block"; clickedButton.className += " active"; }
+
     function timeToMinute(e){if(!e)return 0;const[t,o]=e.split(":").map(Number);return 60*t+o}function minuteToTime(e){const t=Math.floor(e/60).toString().padStart(2,"0"),o=(e%60).toString().padStart(2,"0");return`${t}:${o}`}
+    
     function calculateSchedule(e){const t=e=>parseInt(document.getElementById(e)?.value)||0,o=e=>timeToMinute(document.getElementById(e).value),n=o(`gio_${e}`),a=t(`tiethoc_${e}`),l=t(`rachoi_${e}`),c=t(`duvaotiet_${e}`),s=t(`sotiet_${e}`),i=t(`chaoco_${e}`),d=t(`chunhiem_${e}`);let r=[],u=n;if(i>0)r.push({time:u,description:"Dự vào"}),u+=c,r.push({time:u,description:"Chào cờ"}),u+=i,r.push({time:u,description:"Vào tiết 1"});else if(d>0)r.push({time:u,description:"Bắt đầu SH"}),c>0&&r.push({time:u+d,description:"Dự vào tiết 1"}),u=u+d+c,r.push({time:u,description:"Vào tiết 1"});else r.push({time:u,description:"Vào tiết 1"});for(let e=1;e<=s;e++){let t=u+a;e<s?(l>0&&r.push({time:t,description:`Ra chơi tiết ${e}`}),u=(t+=l)+c,c>0&&r.push({time:t,description:`Dự vào tiết ${e+1}`}),r.push({time:u,description:`Vào tiết ${e+1}`}))  :l>0&&r.push({time:t,description:"Ra về"})}const m=Array.from(new Map(r.map(e=>[e.time,e])).values());return m.map(e=>({...e,time:minuteToTime(e.time)})).sort((e,t)=>timeToMinute(e.time)-timeToMinute(t.time))}
+
     function updatePreviewTable(e){const t=document.getElementById(`enable_${e}`).checked,o=document.getElementById("details-"+e);if(!o)return;if(!t)return void(o.innerHTML="<p style='text-align:center; padding: 10px;'>Lịch này đang tắt.</p>");const n=calculateSchedule(e);let a="<table><thead><tr><th>STT</th><th>Thời gian</th><th>Nội dung</th></tr></thead><tbody>";n.forEach((e,t)=>{a+=`<tr><td>${t+1}</td><td>${e.time}</td><td>${e.description}</td></tr>`}),a+="</tbody></table>",o.innerHTML=a}
+    
     function copyAfternoonSchedule(sourceDayId) { const sourceDayName = document.querySelector(`.tablinks-chieu[onclick*="'${sourceDayId}'"]`).innerText; if (!confirm(`Bạn có chắc muốn sao chép lịch của ${sourceDayName} (chiều) đến tất cả các ngày còn lại của buổi chiều không?`)) return; const sourceData = { enabled: document.getElementById(`enable_${sourceDayId}`).checked, gio: document.getElementById(`gio_${sourceDayId}`).value, tiethoc: document.getElementById(`tiethoc_${sourceDayId}`).value, rachoi: document.getElementById(`rachoi_${sourceDayId}`).value, duvaotiet: document.getElementById(`duvaotiet_${sourceDayId}`).value, sotiet: document.getElementById(`sotiet_${sourceDayId}`).value }; const sourceBaseId = sourceDayId.replace('_chieu', ''); days.filter(day => day.id !== sourceBaseId).forEach(day => { const targetDayId = `${day.id}_chieu`; document.getElementById(`enable_${targetDayId}`).checked = sourceData.enabled; document.getElementById(`gio_${targetDayId}`).value = sourceData.gio; document.getElementById(`tiethoc_${targetDayId}`).value = sourceData.tiethoc; document.getElementById(`rachoi_${targetDayId}`).value = sourceData.rachoi; document.getElementById(`duvaotiet_${targetDayId}`).value = sourceData.duvaotiet; document.getElementById(`sotiet_${targetDayId}`).value = sourceData.sotiet; updatePreviewTable(targetDayId); }); alert('Sao chép thành công! \n\nHãy nhấn nút "Lưu và gửi cập nhật" để áp dụng các thay đổi này.'); }
+    
     function copyMorningSchedule(sourceDayId) { const sourceDayName = document.querySelector(`.tablinks-sang[onclick*="'${sourceDayId}'"]`).innerText; if (!confirm(`Bạn có chắc muốn sao chép lịch của ${sourceDayName} (sáng) đến các ngày còn lại (T3-T7) không?`)) return; const sourceData = { enabled: document.getElementById(`enable_${sourceDayId}`).checked, gio: document.getElementById(`gio_${sourceDayId}`).value, chunhiem: document.getElementById(`chunhiem_${sourceDayId}`).value, tiethoc: document.getElementById(`tiethoc_${sourceDayId}`).value, rachoi: document.getElementById(`rachoi_${sourceDayId}`).value, duvaotiet: document.getElementById(`duvaotiet_${sourceDayId}`).value, sotiet: document.getElementById(`sotiet_${sourceDayId}`).value }; const sourceBaseId = sourceDayId.replace('_sang', ''); const targetDayIds = ['t3', 't4', 't5', 't6', 't7'].filter(id => id !== sourceBaseId); targetDayIds.forEach(dayId => { const targetDayId = `${dayId}_sang`; document.getElementById(`enable_${targetDayId}`).checked = sourceData.enabled; document.getElementById(`gio_${targetDayId}`).value = sourceData.gio; document.getElementById(`chunhiem_${targetDayId}`).value = sourceData.chunhiem; document.getElementById(`tiethoc_${targetDayId}`).value = sourceData.tiethoc; document.getElementById(`rachoi_${targetDayId}`).value = sourceData.rachoi; document.getElementById(`duvaotiet_${targetDayId}`).value = sourceData.duvaotiet; document.getElementById(`sotiet_${targetDayId}`).value = sourceData.sotiet; updatePreviewTable(targetDayId); }); alert('Sao chép thành công! \n\nHãy nhấn nút "Lưu và gửi cập nhật" để áp dụng các thay đổi này.'); }
 
     window.onload = function() { 
         connectToMqtt();
         setInterval(updateLocalClock, 1000);
-        // Script còn lại giữ nguyên
     };
   </script>
 </body>
