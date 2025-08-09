@@ -11,205 +11,321 @@
         box-sizing: border-box;
     }
     body {
-        background: #2c3e50;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #232526 0%, #414345 100%);
+        font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
         color: #ecf0f1;
+        min-height: 100vh;
+        margin: 0;
     }
     #main {
-        margin: 10px auto;
-        width: 360px; /* Chiều rộng cố định cho điện thoại */
+        margin: 24px auto;
+        width: 380px;
+        max-width: 98vw;
     }
 
     /* --- KHUNG NỘI DUNG CHÍNH --- */
     #content {
-        background-color: #34495e; /* Màu nền đồng nhất */
-        border: 1px solid #4a627a;
+        background: rgba(34, 40, 49, 0.98);
+        border: none;
         width: 100%;
         float: left;
-        border-radius: 12px;
-        padding-bottom: 20px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        border-radius: 18px;
+        padding-bottom: 24px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+        transition: box-shadow 0.3s;
     }
 
     /* --- TIÊU ĐỀ & MÀU SẮC NỔI BẬT --- */
     h2 {
-        font-size: 1.4em;
+        font-size: 2em;
         margin-top: 20px;
         margin-bottom: 10px;
         text-align: center;
-        color: #f1c40f;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        color: #f39c12;
+        text-shadow: 0 4px 12px rgba(243, 156, 18, 0.18), 0 2px 4px rgba(0,0,0,0.08);
+        letter-spacing: 1.5px;
+        font-weight: 800;
     }
     h3 {
-        margin-top: 25px;
-        margin-bottom: 15px; 
+        margin-top: 28px;
+        margin-bottom: 18px; 
         text-align: center;
-        font-size: 1.1em;
-        font-weight: bold;
+        font-size: 1.25em;
+        font-weight: 900;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        padding: 8px 15px;
-        background-color: #2c3e50;
-        border-radius: 6px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        letter-spacing: 1.5px;
+        padding: 14px 18px;
+        background: linear-gradient(90deg, #232526 60%, #414345 100%);
+        border-radius: 12px;
         margin-left: 15px;
         margin-right: 15px;
-        border-left: 4px solid; 
+        border-left: 7px solid;
+        border-right: 7px solid;
+        position: relative;
+        z-index: 2;
+        /* THAY ĐỔI: Chữ và viền sáng hơn */
+        color: #00e6ff !important;
+        text-shadow: 0 0 12px #00e6ff, 0 2px 8px #000, 0 0 24px #fff;
+        box-shadow: 0 4px 24px 0 #00000044, 0 2px 8px rgba(0,0,0,0.08),
+                    inset 7px 0 10px -5px,
+                    inset -7px 0 10px -5px;
     }
     #header-sang { 
-        color: #2ecc71; 
-        text-shadow: 0 0 10px rgba(46, 204, 113, 0.7);
         border-color: #2ecc71;
+        box-shadow: 0 4px 24px 0 #00000044, 0 2px 8px rgba(0,0,0,0.08),
+                    inset 7px 0 10px -5px #2ecc71,
+                    inset -7px 0 10px -5px #2ecc71;
     }
     #header-chieu { 
-        color: #3498db; 
-        text-shadow: 0 0 10px rgba(52, 152, 219, 0.7);
         border-color: #3498db;
+        box-shadow: 0 4px 24px 0 #00000044, 0 2px 8px rgba(0,0,0,0.08),
+                    inset 7px 0 10px -5px #3498db,
+                    inset -7px 0 10px -5px #3498db;
     }
-    hr { border: none; height: 1px; background-color: #4a627a; margin: 25px 15px; }
+    hr { border: none; height: 2px; background: linear-gradient(90deg, #f1c40f 0%, #e0eafc 100%); margin: 28px 15px; border-radius: 2px; }
 
     /* --- CÁC HÀNG CÀI ĐẶT CHUNG --- */
     .row {
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         float: left;
         width: 100%;
-        min-height: 40px;
+        min-height: 44px;
         display: flex;
         align-items: center;
+        transition: background 0.2s;
     }
-    .div1 { padding: 0 15px; float: left; margin-bottom: 10px; width: 100%; }
-    .tab1 { width: 150px; float: left; line-height: 25px; font-size: 0.9em; }
+    .div1 { padding: 0 15px; float: left; margin-bottom: 14px; width: 100%; }
+    .tab1 { width: 150px; float: left; line-height: 26px; font-size: 1em; color: #ecf0f1; font-weight: 500; }
     .tab2 { width: 160px; float: left; display: flex; align-items: center; justify-content: space-between; }
     
     input[type="number"], input[type="time"] {
-        width: 85px;
+        width: 90px;
         float: left;
         margin-right: 10px;
-        background-color: #2c3e50;
-        border: 1px solid #555;
-        color: white;
-        border-radius: 5px;
-        padding: 8px;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
-        border-top-color: #222;
+        background: #232526;
+        border: 1.5px solid #414345;
+        color: #f1c40f;
+        border-radius: 7px;
+        padding: 9px 8px;
+        font-size: 1em;
+        box-shadow: 0 1px 4px rgba(52, 152, 219, 0.07);
+        outline: none;
+        transition: border 0.2s, box-shadow 0.2s;
     }
-    input[type="checkbox"].enable-checkbox { width: 20px; height: 20px; flex-shrink: 0; }
+    input[type="number"]:focus, input[type="time"]:focus {
+        border-color: #f1c40f;
+        box-shadow: 0 0 0 2px #f1c40f44;
+    }
+    input[type="checkbox"].enable-checkbox { width: 22px; height: 22px; flex-shrink: 0; accent-color: #16a085; }
     
     /* --- THANH TRẠNG THÁI & ĐỒNG HỒ --- */
     .status-bar { 
-        padding: 8px 15px;
-        margin: 0 15px 10px 15px; 
+        padding: 10px 18px;
+        margin: 0 15px 14px 15px; 
         text-align: center; 
         font-weight: bold; 
-        border-radius: 6px; 
+        border-radius: 8px; 
         transition: all 0.5s;
-        font-size: 0.85em;
-        text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        font-size: 1em;
+        text-transform: uppercase; letter-spacing: 0.7px; box-shadow: 0 2px 8px rgba(52, 152, 219, 0.10);
+        color: #ecf0f1;
     }
-    .status-connected { background-color: #27ae60; color: white; }
-    .status-disconnected { background-color: #c0392b; color: white; }
-    .status-connecting { background-color: #7f8c8d; color: white; }
-    .clock-container { text-align: center; margin: 20px 15px; background-color: #2c3e50; border: 1px solid #f1c40f; border-radius: 10px; padding: 15px 10px; box-shadow: inset 0 0 15px rgba(241, 196, 15, 0.3), 0 2px 5px rgba(0,0,0,0.3); }
-    .clock { font-size: 2.8em; color: #f1c40f; text-shadow: 0 0 8px rgba(241, 196, 15, 0.7); font-family: 'Courier New', Courier, monospace; letter-spacing: 3px;}
-    .date-display { font-size: 1em; color: #ecf0f1; margin-top: 5px; }
+    .status-connected { background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%); color: #222; }
+    .status-disconnected { background: linear-gradient(90deg, #ff5858 0%, #f09819 100%); color: #fff; }
+    .status-connecting { background: linear-gradient(90deg, #7f8c8d 0%, #b2bec3 100%); color: #222; }
+    .clock-container { text-align: center; margin: 22px 15px; background: linear-gradient(120deg, #232526 60%, #414345 100%); border: 2px solid #f1c40f; border-radius: 14px; padding: 18px 10px; box-shadow: 0 2px 12px rgba(241, 196, 15, 0.10), 0 2px 5px rgba(0,0,0,0.08); }
+    .date-display { font-size: 1.08em; color: #ecf0f1; margin-top: 7px; font-weight: 500; }
 
-    /* --- NÚT BẤM 3D --- */
-    .button-container { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 20px; padding: 0 15px; }
-    input[type="button"] {
-        padding: 12px 5px;
-        font-size: 0.8em;
-        font-weight: bold; border-radius: 8px; border: 1px solid rgba(0,0,0,0.2); cursor: pointer; transition: all 0.1s ease-out; color: white; text-transform: uppercase; letter-spacing: 0.5px;
-        border-bottom-width: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    /* === KHU VỰC NÚT ĐIỀU KHIỂN === */
+    .button-section {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 0 15px;
+        margin-top: 24px;
     }
-    input[type="button"]:active { transform: translateY(3px); box-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-    .save-button { background-color: #2980b9; border-color: #206390; }
-    .test-button { background-color: #e74c3c; border-color: #b83c2f; }
-    .preview-button { background-color: #27ae60; border-color: #1f8a4c; margin-top: 10px; width: 100%; }
+    .modern-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 54px;
+        padding: 0;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.08em;
+        font-weight: 700; /* THAY ĐỔI: Giảm độ đậm để sửa lỗi phông */
+        letter-spacing: 1.5px;
+        transition: box-shadow 0.18s, transform 0.13s, filter 0.13s;
+        cursor: pointer;
+        outline: none;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+    .modern-btn:active {
+        transform: scale(0.97);
+        filter: brightness(0.97);
+        box-shadow: 0 2px 8px 0 #0004;
+    }
+
+    .save-button {
+        width: 100%;
+        background: linear-gradient(90deg, #232526 60%, #414345 100%);
+        color: #00e6ff;
+        border-left: 5px solid #00e6ff;
+        border-right: 5px solid #00e6ff;
+        text-shadow: 0 0 12px #00e6ff, 0 2px 8px #000, 0 0 24px #fff;
+        box-shadow: 0 4px 18px 0 #00e6ff33, 0 2px 8px #fff2;
+        text-transform: uppercase;
+    }
+    .save-button:hover {
+        filter: brightness(1.12);
+        box-shadow: 0 10px 32px #00e6ff99, 0 2px 12px #fff4;
+    }
+    
+    .button-row {
+        display: flex;
+        gap: 18px;
+    }
+    .button-row .modern-btn {
+        flex-grow: 1;
+    }
+    
+    .test-button {
+        background: linear-gradient(90deg, #232526 60%, #414345 100%);
+        color: #f1c40f;
+        border-left: 5px solid #f1c40f;
+        border-right: 5px solid #f1c40f;
+        text-shadow: 0 0 12px #f1c40f, 0 2px 8px #000, 0 0 24px #fff;
+        box-shadow: 0 4px 18px 0 #f1c40f33, 0 2px 8px #fff2;
+    }
+    .test-button:hover {
+        filter: brightness(1.08);
+        box-shadow: 0 10px 32px #f1c40f99, 0 2px 12px #fff4;
+    }
+    .logout-button {
+        background: linear-gradient(90deg, #232526 60%, #414345 100%);
+        color: #e74c3c;
+        border-left: 5px solid #e74c3c;
+        border-right: 5px solid #e74c3c;
+        text-shadow: 0 0 12px #e74c3c, 0 2px 8px #000, 0 0 24px #fff;
+        box-shadow: 0 4px 18px 0 #e74c3c33, 0 2px 8px #fff2;
+    }
+    .logout-button:hover {
+        filter: brightness(1.08);
+        box-shadow: 0 10px 32px #e74c3c99, 0 2px 12px #fff4;
+    }
 
     /* --- TAB NGÀY & NỘI DUNG TAB --- */
-    .tab { display: flex; justify-content: space-around; border-bottom: 2px solid #4a627a; margin: 0 15px 0 15px; }
+    .tab { display: flex; justify-content: space-around; border-bottom: 2px solid #f1c40f; margin: 0 15px 0 15px; position: relative; z-index: 1; }
     .tab button {
-        flex-grow: 1;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 10px 5px;
-        transition: all 0.2s ease;
-        font-size: 0.8em;
-        font-weight: bold;
-        border-radius: 6px 6px 0 0;
-        margin: 0 2px;
-        position: relative;
-        top: 2px;
-        border-bottom: 3px solid transparent;
-        background-color: #405569;
-        color: #bdc3c7;
+        flex-grow: 1; border: none; outline: none; cursor: pointer; padding: 12px 5px 10px 5px;
+        transition: all 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s;
+        font-size: 1em; font-weight: 700; border-radius: 8px 8px 0 0; margin: 0 2px;
+        position: relative; top: 2px; border-bottom: 3px solid transparent;
+        background: #232526; color: #f1c40f; box-shadow: 0 2px 8px #f1c40f22;
+    }
+    .tab button:hover {
+        background: #414345; color: #fff200; box-shadow: 0 4px 16px #f1c40f55;
+        transform: translateY(-2px) scale(1.04);
+    }
+    .tab button:active {
+        background: #fff200; color: #232526; box-shadow: 0 2px 8px #fff20099;
+        transform: scale(0.98);
     }
     .tab button.active { 
-        background-color: #4a627a;
-        color: white; 
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        background: linear-gradient(90deg, #fff200 60%, #f1c40f 100%);
+        color: #232526; 
+        box-shadow: 0 4px 24px #fff20099, 0 2px 8px #f1c40f55;
         border-bottom-color: #f1c40f;
+        z-index: 2;
     }
-    #tab_sang button.active { color: #2ecc71; }
-    #tab_chieu button.active { color: #3498db; }
     
     .tabcontent { 
-        display: none; 
-        padding: 15px;
-        background-color: #34495e;
+        display: none; padding: 18px 10px 10px 10px; background: #232526;
+        border-radius: 0 0 12px 12px; box-shadow: 0 2px 8px rgba(52, 152, 219, 0.05);
+        margin-bottom: 8px;
     }
-    .tabcontent h3 { font-size: 1.0em; margin-top: 0; margin-bottom: 15px; border: none; box-shadow: none; background: none; }
+    .tabcontent h3 { font-size: 1.08em; margin-top: 0; margin-bottom: 15px; border: none; box-shadow: none; background: none; color: #f1c40f; font-weight: 700; }
     
     /* --- KHU VỰC CÀI ĐẶT (DETAILS) --- */
     details {
-        border: 1px solid #4a627a; border-radius: 8px; margin-bottom: 10px;
-        background-color: #2c3e50; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        overflow: hidden;
+        border: 1.5px solid #414345; border-radius: 12px; margin-bottom: 12px;
+        background: #232526; box-shadow: 0 2px 8px rgba(52, 152, 219, 0.06);
+        overflow: hidden; transition: box-shadow 0.2s;
     }
     summary {
-        font-weight: bold; padding: 12px 15px; cursor: pointer; outline: none; color: #f1c40f;
-        transition: background-color 0.2s;
-        list-style: none;
+        font-weight: bold; padding: 13px 15px; cursor: pointer; outline: none;
+        transition: background 0.2s, color 0.2s; list-style: none;
     }
-    summary::-webkit-details-marker, summary::marker {
-        display: none;
-    }
-
-    details[open] > summary { background-color: #405569; }
-    .details-content { padding: 10px 15px 15px 15px; border-top: 1px solid #4a627a; }
+    summary::-webkit-details-marker, summary::marker { display: none; }
     
-    /* --- CĂN CHỈNH CÁC KHU VỰC CỤ THỂ --- */
-    summary#header-sohoi, 
+    /* THAY ĐỔI: Đồng bộ giao diện "Số hồi chuông" với các nút */
+    summary#header-sohoi {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 54px;
+        border-radius: 12px;
+        background: linear-gradient(90deg, #232526 60%, #414345 100%);
+        color: #f1c40f;
+        border-left: 5px solid #f1c40f;
+        border-right: 5px solid #f1c40f;
+        text-shadow: 0 0 12px #f1c40f, 0 2px 8px #000, 0 0 24px #fff;
+        box-shadow: 0 4px 18px 0 #f1c40f33, 0 2px 8px #fff2;
+    }
+    summary#header-sohoi div:first-child {
+        font-size: 1.08em;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+    }
+    /* Bỏ hiệu ứng đổi màu khi mở */
+    details[open] > summary#header-sohoi {
+        background: linear-gradient(90deg, #232526 60%, #414345 100%);
+        color: #f1c40f;
+    }
     .tabcontent details summary {
         text-align: center;
+        font-size: 1.08em;
+        border-radius: 10px 10px 0 0;
+        background: #232526;
+        color: #f1c40f;
     }
+    details[open] > .tabcontent details summary, 
+    details[open] > summary { 
+        background: #f1c40f;
+        color: #232526; 
+    }
+    .details-content { padding: 12px 15px 16px 15px; border-top: 1.5px solid #414345; }
+    
     #header-sohoi + .details-content .row { justify-content: flex-start; }
     #header-sohoi + .details-content .tab1 { width: 140px; }
     #header-sohoi + .details-content .tab2 { width: 120px; }
     
     /* --- BẢNG LỊCH CHI TIẾT --- */
-    .details-container table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    .details-container th, .details-container td {
-        border: 1px solid #4a627a; padding: 9px 5px; text-align: center; font-size: 13px;
-    }
-    .details-container th { background-color: #2c3e50; color: #f1c40f; font-weight: bold; }
-    .details-container tbody tr:nth-child(odd) { background-color: #34495e; }
-    .details-container tbody tr:nth-child(even) { background-color: #405569; }
+    .details-container table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #232526; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(52, 152, 219, 0.06); }
+    .details-container th, .details-container td { border: 1px solid #414345; padding: 10px 5px; text-align: center; font-size: 14px; }
+    .details-container th { background: #f1c40f; color: #232526; font-weight: bold; }
+    .details-container tbody tr:nth-child(odd) { background: #232526; color: #ecf0f1; }
+    .details-container tbody tr:nth-child(even) { background: #414345; color: #ecf0f1; }
 
     /* --- NÚT SAO CHÉP ĐẾN --- */
     .copy-button {
-        margin-left: auto; padding: 4px 8px; font-size: 0.8em; color: white; border: none;
-        border-radius: 4px; cursor: pointer; transition: background-color 0.2s;
+        margin-left: auto; padding: 6px 14px; font-size: 0.95em; color: #fff; border: none;
+        border-radius: 6px; cursor: pointer; transition: background 0.18s, box-shadow 0.18s;
+        font-weight: 600; box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
     }
-    .copy-button.sang { background-color: #28a745; }
-    .copy-button.sang:hover { background-color: #218838; }
-    .copy-button.chieu { background-color: #007bff; }
-    .copy-button.chieu:hover { background-color: #0069d9; }
+    .copy-button.sang { background: linear-gradient(90deg, #16a085 0%, #43e97b 100%); }
+    .copy-button.sang:hover { background: #16a085; }
+    .copy-button.chieu { background: linear-gradient(90deg, #2980b9 0%, #6dd5fa 100%); }
+    .copy-button.chieu:hover { background: #2980b9; }
     .activation-row .tab2 { justify-content: flex-start; }
 
-    a#logout-link { color: #e74c3c; cursor: pointer; text-decoration: none; font-weight: bold; }
-    a#logout-link:hover { text-decoration: underline; }
+    .divider-yellow {
+        width: 90%; height: 3px; background: linear-gradient(90deg, #f1c40f 0%, #fff200 100%);
+        border-radius: 2px; margin: 24px auto 18px auto; box-shadow: 0 2px 8px #f1c40f55;
+    }
   </style>
 </head>
 <body>
@@ -217,7 +333,7 @@
     <div id="content">
       <div style="text-align: center; padding: 15px 0 5px 0;">
         <h2 style="margin: 0; padding: 0;">CHUÔNG BÁO TỰ ĐỘNG</h2>
-        <p style="margin: 5px 0 0 0; padding: 0; font-size: 1.2em; color: #f0f0f0; font-weight: bold;">THPT YÊN KHÁNH A</p>
+        <p style="margin: 5px 0 0 0; padding: 0; font-size: 1.2em; color: #00e6ff; font-weight: bold; text-shadow: 0 0 8px #00e6ff, 0 2px 8px #000; letter-spacing: 1.2px;">THPT YÊN KHÁNH A</p>
       </div>
       <div class="clock-container" id="clock-wrapper" style="display: none;">
         <div id="clock" class="clock">--:--:--</div>
@@ -237,9 +353,8 @@
         <button class="tablinks-sang" onclick="openDay(event, 'cn_sang', 'sang')">CN</button>
       </div>
       <div id="tab-container-sang"></div>
+      <div class="divider-yellow"></div>
       
-      <hr>
-
       <h3 id="header-chieu">LỊCH BUỔI CHIỀU</h3>
       <div class="tab" id="tab_chieu">
         <button class="tablinks-chieu" onclick="openDay(event, 't2_chieu', 'chieu')">Thứ 2</button>
@@ -251,6 +366,7 @@
         <button class="tablinks-chieu" onclick="openDay(event, 'cn_chieu', 'chieu')">CN</button>
       </div>
       <div id="tab-container-chieu"></div>
+      <div class="divider-yellow"></div>
       
       <div class="div1">
           <details>
@@ -266,14 +382,14 @@
               </div>
           </details>
       </div>
+      <div class="divider-yellow"></div>
 
-      <div class="button-container">
-        <input type="button" class="save-button" onclick="publishUpdate()" value="Lưu và gửi cập nhật">
-        <input type="button" class="test-button" onclick="publishTestBell()" value="Thử Chuông">
-      </div>
-
-      <div style="text-align:center; margin-top:20px; float:left; width: 100%;">
-         <a id="logout-link" onclick="logout()">Đăng xuất</a>
+      <div class="button-section">
+        <button class="modern-btn save-button" onclick="publishUpdate()">Lưu và gửi cập nhật</button>
+        <div class="button-row">
+            <button class="modern-btn test-button" onclick="publishTestBell()">Thử Chuông</button>
+            <button class="modern-btn logout-button" onclick="logout()">Đăng xuất</button>
+        </div>
       </div>
 
     </div>
@@ -399,20 +515,16 @@
     
     function gatherDataFromForm(){const e={sohoi:{},lich:{sang:{},chieu:{}}};return["batdau","vaotiet","rachoi","duvao"].forEach(t=>{e.sohoi[t]=parseInt(document.getElementById(`sohoi_${t}`).value)||0}),["sang","chieu"].forEach(t=>{days.forEach(o=>{const n=e.lich[t][o.id]={};n.enabled=document.getElementById(`enable_${o.id}_${t}`).checked,n.gio=document.getElementById(`gio_${o.id}_${t}`).value,n.tiethoc=parseInt(document.getElementById(`tiethoc_${o.id}_${t}`).value)||0,n.rachoi=parseInt(document.getElementById(`rachoi_${o.id}_${t}`).value)||0,n.duvaotiet=parseInt(document.getElementById(`duvaotiet_${o.id}_${t}`).value)||0,n.sotiet=parseInt(document.getElementById(`sotiet_${o.id}_${t}`).value)||0;const a=document.getElementById(`chaoco_${o.id}_${t}`);a&&(n.chaoco=parseInt(a.value)||0);const l=document.getElementById(`chunhiem_${o.id}_${t}`);l&&(n.chunhiem=parseInt(l.value)||0)})}),e}
     
-    // === THAY ĐỔI: Chức năng Đóng/Mở cho các tab ngày ===
     function openDay(e, t, o) {
         const clickedButton = e.currentTarget;
         const tabContent = document.getElementById(t);
 
-        // Kiểm tra nếu nút được bấm đã ở trạng thái active
         if (clickedButton.classList.contains('active')) {
-            // Nếu có, thì ẩn nội dung và bỏ trạng thái active (đóng tab lại)
             tabContent.style.display = 'none';
             clickedButton.classList.remove('active');
-            return; // Dừng hàm tại đây
+            return;
         }
 
-        // Nếu không, thực hiện logic như cũ: đóng các tab khác và mở tab này
         let i;
         const allTabContent = document.getElementsByClassName("tabcontent");
         for (i = 0; i < allTabContent.length; i++) {
